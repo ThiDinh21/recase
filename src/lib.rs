@@ -123,6 +123,15 @@ impl Recase {
             }
         }
     }
+
+    pub fn upper_snake_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .map(|w| w.to_uppercase())
+            .collect::<Vec<String>>()
+            .join("_")
+    }
 }
 
 #[cfg(test)]
@@ -273,5 +282,32 @@ mod recase_tests {
 
         let recase = Recase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
         assert_eq!(recase.title_case(), "SSho Is God And Why Is SShe? Mätßuri");
+    }
+
+    #[test]
+    fn test_upper_snake_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.upper_snake_case(),
+            "WHO_IS_GOD_AND_WHY_IS_SHE_MATSURI"
+        );
+
+        let recase = Recase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.upper_snake_case(),
+            "誰_IS_GOD_AND_WHY_IS_SHE_MATSURI"
+        );
+
+        let recase = Recase::new("WHO_is_god_and_Why is she_Matsuri".to_string());
+        assert_eq!(
+            recase.upper_snake_case(),
+            "W_H_O_IS_GOD_AND_WHY_IS_SHE_MATSURI"
+        );
+
+        let recase = Recase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
+        assert_eq!(
+            recase.upper_snake_case(),
+            "SSHO_IS_GOD_AND_WHY_IS_SSHE?_MÄTSSURI"
+        );
     }
 }
