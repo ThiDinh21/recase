@@ -4,6 +4,12 @@ version = "0.1.0"
 edition = "2021"
 description = "Changes the convention case of input text."
 license = "BSD 2-Clause"
+readme = "README.md"
+authors = ["galatea21"]
+repository = "https://github.com/galatea21/recase"
+homepage = "https://github.com/galatea21/recase"
+keywords = ["recase", "text", "case", "convention"]
+categories = ["text-processing"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
