@@ -75,6 +75,30 @@ impl Recase {
             .join("-")
     }
 
+    pub fn dot_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .collect::<Vec<String>>()
+            .join(".")
+    }
+
+    pub fn path_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .collect::<Vec<String>>()
+            .join("/")
+    }
+
+    pub fn windows_path_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .collect::<Vec<String>>()
+            .join("\\")
+    }
+
     pub fn sentence_case(&self) -> String {
         let mut words = self.words.clone().into_iter();
         match words.next() {
@@ -201,6 +225,21 @@ mod recase_tests {
 
         let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
         assert_eq!(recase.kebab_case(), "ßho-is-god-and-why-is-she-matsuri");
+    }
+
+    #[test]
+    fn test_dot_path_winpath_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.dot_case(), "who.is.god.and.why.is.she.matsuri");
+
+        let recase = Recase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.path_case(), "w/h/o/is/god/and/why/is/she/matsuri");
+
+        let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.windows_path_case(),
+            "ßho\\is\\god\\and\\why\\is\\she\\matsuri"
+        );
     }
 
     #[test]
