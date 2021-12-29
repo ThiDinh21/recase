@@ -1,3 +1,5 @@
+use unicode_segmentation::UnicodeSegmentation;
+
 mod utils;
 
 #[derive(Debug)]
@@ -134,6 +136,34 @@ impl Recase {
             .map(|w| w.to_uppercase())
             .collect::<Vec<String>>()
             .join("_")
+    }
+
+    pub fn alternating_case(&self) -> String {
+        let mut uppercase = true;
+
+        self.words
+            .clone()
+            .into_iter()
+            .map(|w| {
+                // uppercase = !uppercase;
+
+                // Alternately recasing each letter of each word
+                let chars = w.graphemes(true);
+                chars
+                    .map(|c| {
+                        if uppercase {
+                            uppercase = !uppercase;
+                            c.to_uppercase()
+                        } else {
+                            uppercase = !uppercase;
+                            c.to_lowercase()
+                        }
+                    })
+                    .collect::<Vec<String>>()
+                    .join("")
+            })
+            .collect::<Vec<String>>()
+            .join(" ")
     }
 }
 
@@ -311,6 +341,33 @@ mod recase_tests {
         assert_eq!(
             recase.upper_snake_case(),
             "SSHO_IS_GOD_AND_WHY_IS_SSHE?_MÄTSSURI"
+        );
+    }
+
+    #[test]
+    fn test_alternating_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.alternating_case(),
+            "WhO iS gOd AnD wHy Is ShE mAtSuRi"
+        );
+
+        let recase = Recase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.alternating_case(),
+            "誰 iS gOd AnD wHy Is ShE mAtSuRi"
+        );
+
+        let recase = Recase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.alternating_case(),
+            "W h O iS gOd AnD wHy Is ShE mAtSuRi"
+        );
+
+        let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(
+            recase.alternating_case(),
+            "SShO iS gOd AnD wHy Is ShE mAtSuRi"
         );
     }
 }
