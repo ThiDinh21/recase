@@ -1,7 +1,8 @@
-use crate::Recase;
 use unicode_segmentation::UnicodeSegmentation;
 
 pub fn slice_into_words(input: String) -> Vec<String> {
+    pub const SYMBOLS: [&'static str; 6] = [" ", ".", "/", "_", "-", "\\"];
+
     let mut words: Vec<String> = vec![];
     let mut temp_word: Vec<&str> = vec![];
 
@@ -15,7 +16,7 @@ pub fn slice_into_words(input: String) -> Vec<String> {
 
     for c in input.graphemes(true) {
         // slice when a symbol is detected
-        if Recase::SYMBOLS.contains(&c) {
+        if SYMBOLS.contains(&c) {
             if !temp_word.is_empty() {
                 words.push(vec_to_lowercase(&temp_word));
                 temp_word.clear();
@@ -44,6 +45,15 @@ pub fn is_uppercase(character: &str) -> bool {
         panic!("is_uppercase only take 1 character");
     }
     character == character.to_uppercase() && character != character.to_lowercase()
+}
+
+pub fn uppercase_first_letter(word: &str) -> String {
+    let s = String::from(word);
+    let mut chars = s.graphemes(true);
+    match chars.next() {
+        None => panic!("Passing empty words"),
+        Some(c) => c.to_uppercase() + chars.as_str(),
+    }
 }
 
 #[cfg(test)]
@@ -89,6 +99,26 @@ mod utils_tests {
         #[test]
         fn uppercase_std() {
             assert_eq!("ß".to_uppercase(), "SS".to_string());
+        }
+
+        #[test]
+        #[should_panic]
+        fn test_uppercase_first_letter() {
+            assert_eq!(
+                uppercase_first_letter("ßenevolent"),
+                "SSenevolent".to_string()
+            );
+            assert_eq!(uppercase_first_letter("ṁatsuri"), "Ṁatsuri".to_string());
+            assert_eq!(
+                uppercase_first_letter("夏色まつり"),
+                "夏色まつり".to_string()
+            );
+            assert_eq!(
+                uppercase_first_letter("normalForOnce"),
+                "NormalForOnce".to_string()
+            );
+            assert_eq!(uppercase_first_letter("?"), "?".to_string());
+            uppercase_first_letter("");
         }
     }
 
