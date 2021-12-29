@@ -33,6 +33,14 @@ impl Recase {
             }
         }
     }
+
+    pub fn normal_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .collect::<Vec<String>>()
+            .join(" ")
+    }
 }
 
 #[cfg(test)]
@@ -78,5 +86,20 @@ mod recase_tests {
 
         let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
         assert_eq!(recase.sentence_case(), "SSho is god and why is she matsuri");
+    }
+
+    #[test]
+    fn test_normal_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.normal_case(), "who is god and why is she matsuri");
+
+        let recase = Recase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.normal_case(), "誰 is god and why is she matsuri");
+
+        let recase = Recase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.normal_case(), "w h o is god and why is she matsuri");
+
+        let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.normal_case(), "ßho is god and why is she matsuri");
     }
 }
