@@ -8,6 +8,7 @@ readme = "README.md"
 authors = ["galatea21"]
 repository = "https://github.com/galatea21/recase"
 homepage = "https://github.com/galatea21/recase"
+documentation = "https://docs.rs/recase"
 keywords = ["recase", "text", "case", "convention"]
 categories = ["text-processing"]
 

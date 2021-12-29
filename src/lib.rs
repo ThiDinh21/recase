@@ -1,7 +1,18 @@
+//! # ReCase
+//!
+//! `recase` is a text processing utility that changes the input text into desired convention cases.
+
 use unicode_segmentation::UnicodeSegmentation;
 
 mod utils;
 
+/// An instance that holds the text to be re-cased.
+/// # Example
+/// ```
+/// let recase = recase::ReCase::new(String::from("Example String"));
+/// assert_eq!(recase.snake_case(), String::from("example_string"));          
+/// assert_eq!(recase.upper_snake_case(), String::from("EXAMPLE_STRING"));
+/// ```
 #[derive(Debug)]
 pub struct ReCase {
     original_text: String,
@@ -9,6 +20,9 @@ pub struct ReCase {
 }
 
 impl ReCase {
+    /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into
+    /// supported convention cases.
+    /// The method takes a String as an input and will panic if given an empty string.
     pub fn new(original_text: String) -> ReCase {
         let words = utils::slice_into_words(original_text.clone());
         if words.len() < 1 {
@@ -22,10 +36,22 @@ impl ReCase {
 }
 
 impl ReCase {
+    /// Returns a clone of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.original_case(), String::from("Example String"));
+    /// ```
     pub fn original_case(&self) -> String {
         self.original_text.clone()
     }
 
+    /// Returns a `normal case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.normal_case(), String::from("example string"));
+    /// ```
     pub fn normal_case(&self) -> String {
         self.words
             .clone()
@@ -34,6 +60,12 @@ impl ReCase {
             .join(" ")
     }
 
+    /// Returns a `camelCase` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.camel_case(), String::from("exampleString"));
+    /// ```
     pub fn camel_case(&self) -> String {
         let mut words = self.words.clone().into_iter();
         match words.next() {
@@ -47,6 +79,12 @@ impl ReCase {
         }
     }
 
+    /// Returns a `PascalCase` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.pascal_case(), String::from("ExampleString"));
+    /// ```
     pub fn pascal_case(&self) -> String {
         let mut words = self.words.clone().into_iter();
         match words.next() {
@@ -61,6 +99,12 @@ impl ReCase {
         }
     }
 
+    /// Returns a `snake_case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.snake_case(), String::from("example_string"));
+    /// ```
     pub fn snake_case(&self) -> String {
         self.words
             .clone()
@@ -69,6 +113,12 @@ impl ReCase {
             .join("_")
     }
 
+    /// Returns a `kebab-case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.kebab_case(), String::from("example-string"));
+    /// ```
     pub fn kebab_case(&self) -> String {
         self.words
             .clone()
@@ -77,6 +127,12 @@ impl ReCase {
             .join("-")
     }
 
+    /// Returns a `dot.case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.dot_case(), String::from("example.string"));
+    /// ```
     pub fn dot_case(&self) -> String {
         self.words
             .clone()
@@ -85,6 +141,12 @@ impl ReCase {
             .join(".")
     }
 
+    /// Returns a `path/case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.path_case(), String::from("example/string"));
+    /// ```
     pub fn path_case(&self) -> String {
         self.words
             .clone()
@@ -93,6 +155,12 @@ impl ReCase {
             .join("/")
     }
 
+    /// Returns a `windows\path\case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.windows_path_case(), String::from("example\\string"));
+    /// ```
     pub fn windows_path_case(&self) -> String {
         self.words
             .clone()
@@ -101,6 +169,12 @@ impl ReCase {
             .join("\\")
     }
 
+    /// Returns a `Sentence case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.sentence_case(), String::from("Example string"));
+    /// ```
     pub fn sentence_case(&self) -> String {
         let mut words = self.words.clone().into_iter();
         match words.next() {
@@ -111,6 +185,12 @@ impl ReCase {
         }
     }
 
+    /// Returns a `Title Case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.title_case(), String::from("Example String"));
+    /// ```
     pub fn title_case(&self) -> String {
         self.words
             .clone()
@@ -120,6 +200,12 @@ impl ReCase {
             .join(" ")
     }
 
+    /// Returns a `Header-Case` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.header_case(), String::from("Example-String"));
+    /// ```
     pub fn header_case(&self) -> String {
         self.words
             .clone()
@@ -129,6 +215,12 @@ impl ReCase {
             .join("-")
     }
 
+    /// Returns a `UPPER_SNAKE_CASE` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.upper_snake_case(), String::from("EXAMPLE_STRING"));
+    /// ```
     pub fn upper_snake_case(&self) -> String {
         self.words
             .clone()
@@ -138,6 +230,12 @@ impl ReCase {
             .join("_")
     }
 
+    /// Returns a `AlTeRnAtInG cAsE` version of the original String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new(String::from("Example String"));
+    /// assert_eq!(recase.alternating_case(), String::from("ExAmPlE sTrInG"));
+    /// ```
     pub fn alternating_case(&self) -> String {
         let mut uppercase = true;
 
