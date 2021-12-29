@@ -59,6 +59,22 @@ impl Recase {
         }
     }
 
+    pub fn snake_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .collect::<Vec<String>>()
+            .join("_")
+    }
+
+    pub fn kebab_case(&self) -> String {
+        self.words
+            .clone()
+            .into_iter()
+            .collect::<Vec<String>>()
+            .join("-")
+    }
+
     pub fn sentence_case(&self) -> String {
         let mut words = self.words.clone().into_iter();
         match words.next() {
@@ -155,6 +171,36 @@ mod recase_tests {
 
         let recase = Recase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
         assert_eq!(recase.pascal_case(), "SShoIsGodAndWhyIsSShe?Mätßuri");
+    }
+
+    #[test]
+    fn test_snake_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.snake_case(), "who_is_god_and_why_is_she_matsuri");
+
+        let recase = Recase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.snake_case(), "誰_is_god_and_why_is_she_matsuri");
+
+        let recase = Recase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.snake_case(), "w_h_o_is_god_and_why_is_she_matsuri");
+
+        let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.snake_case(), "ßho_is_god_and_why_is_she_matsuri");
+    }
+
+    #[test]
+    fn test_kebab_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.kebab_case(), "who-is-god-and-why-is-she-matsuri");
+
+        let recase = Recase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.kebab_case(), "誰-is-god-and-why-is-she-matsuri");
+
+        let recase = Recase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.kebab_case(), "w-h-o-is-god-and-why-is-she-matsuri");
+
+        let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.kebab_case(), "ßho-is-god-and-why-is-she-matsuri");
     }
 
     #[test]
