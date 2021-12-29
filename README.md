@@ -53,7 +53,7 @@ fn main() {
 ## Limitations
 
 -   The crate has not undergone any runtime optimization.
--   Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß". There might be more that I failed to detect.
+-   Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß". There might be some more cases that I failed to detect.
 
 <p>&nbsp  </p>
 
