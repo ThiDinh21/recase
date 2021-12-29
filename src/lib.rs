@@ -41,6 +41,19 @@ impl Recase {
             .collect::<Vec<String>>()
             .join(" ")
     }
+
+    pub fn camel_case(&self) -> String {
+        let mut words = self.words.clone().into_iter();
+        match words.next() {
+            None => panic!("The field \"words\" is empty"),
+            Some(s) => {
+                s + &words
+                    .map(|w| utils::uppercase_first_letter(&w))
+                    .collect::<Vec<String>>()
+                    .join("")
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -101,5 +114,20 @@ mod recase_tests {
 
         let recase = Recase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
         assert_eq!(recase.normal_case(), "ßho is god and why is she matsuri");
+    }
+
+    #[test]
+    fn test_camel_case() {
+        let recase = Recase::new("who_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.camel_case(), "whoIsGodAndWhyIsSheMatsuri");
+
+        let recase = Recase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
+        assert_eq!(recase.camel_case(), "誰IsGodAndWhyIsSheMatsuri");
+
+        let recase = Recase::new("WHO_is_god_and_Why is she_Matsuri".to_string());
+        assert_eq!(recase.camel_case(), "wHOIsGodAndWhyIsSheMatsuri");
+
+        let recase = Recase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
+        assert_eq!(recase.camel_case(), "ßhoIsGodAndWhyIsSShe?Mätßuri");
     }
 }
