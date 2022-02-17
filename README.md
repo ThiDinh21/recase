@@ -1,5 +1,7 @@
 # ReCase
 
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+
 Changes the input text to the desired convention case.
 
 <p>&nbsp  </p>
@@ -10,7 +12,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-recase = "0.1.0"
+recase = "0.1.1"
 ```
 
 <p>&nbsp  </p>

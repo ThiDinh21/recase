@@ -1,6 +1,6 @@
 [package]
 name = "recase"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Changes the convention case of input text."
 license = "BSD-2-Clause"
@@ -15,4 +15,4 @@ categories = ["text-processing"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-unicode-segmentation = "1.8.0"
+unicode-segmentation = "1.9.0"

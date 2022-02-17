@@ -289,7 +289,6 @@ mod recase_tests {
                 "ütf8".to_string()
             ]
         );
-        ReCase::new("__ /".to_string());
     }
 
     #[test]
