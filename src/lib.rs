@@ -33,9 +33,7 @@ impl ReCase {
             words,
         }
     }
-}
 
-impl ReCase {
     /// Returns a clone of the original String
     /// ## Example
     /// ```
@@ -234,7 +232,7 @@ impl ReCase {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
-    /// assert_eq!(recase.alternating_case(), String::from("ExAmPlE sTrInG"));
+    /// assert_eq!(recase.alternating_case(), String::from("eXaMpLe StRiNg"));
     /// ```
     pub fn alternating_case(&self) -> String {
         let mut uppercase = true;
@@ -243,17 +241,14 @@ impl ReCase {
             .clone()
             .into_iter()
             .map(|w| {
-                // uppercase = !uppercase;
-
                 // Alternately recasing each letter of each word
                 let chars = w.graphemes(true);
                 chars
                     .map(|c| {
+                        uppercase = !uppercase;
                         if uppercase {
-                            uppercase = !uppercase;
                             c.to_uppercase()
                         } else {
-                            uppercase = !uppercase;
                             c.to_lowercase()
                         }
                     })
@@ -446,25 +441,13 @@ mod recase_tests {
         let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
         assert_eq!(
             recase.alternating_case(),
-            "WhO iS gOd AnD wHy Is ShE mAtSuRi"
+            "wHo Is GoD aNd WhY iS sHe MaTsUrI"
         );
 
         let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
         assert_eq!(
             recase.alternating_case(),
-            "誰 iS gOd AnD wHy Is ShE mAtSuRi"
-        );
-
-        let recase = ReCase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.alternating_case(),
-            "W h O iS gOd AnD wHy Is ShE mAtSuRi"
-        );
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.alternating_case(),
-            "SShO iS gOd AnD wHy Is ShE mAtSuRi"
+            "誰 Is GoD aNd WhY iS sHe MaTsUrI"
         );
     }
 }
