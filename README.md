@@ -4,7 +4,7 @@
 
 Changes the input text to the desired convention case.
 
-<p>&nbsp  </p>
+<p>&nbsp</p>
 
 ## Install
 
@@ -15,7 +15,7 @@ Add this to your `Cargo.toml`:
 recase = "0.1.1"
 ```
 
-<p>&nbsp  </p>
+<p>&nbsp</p>
 
 ## Example:
 
@@ -32,7 +32,7 @@ fn main() {
 }
 ```
 
-<p>&nbsp  </p>
+<p>&nbsp</p>
 
 ## All supported convention cases:
 
@@ -48,16 +48,16 @@ fn main() {
 -   Sentence case
 -   Header-Case
 -   UPPER_CASE_SNAKE_CASE
--   AlTeRnAtInG cAsE
+-   aLtErNaTiNg CaSe
 
-<p>&nbsp  </p>
+<p>&nbsp</p>
 
 ## Limitations
 
 -   The crate has not undergone any runtime optimization.
 -   Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß". There might be some more cases that I failed to detect.
 
-<p>&nbsp  </p>
+<p>&nbsp</p>
 
 ## Acknowledgements
 
