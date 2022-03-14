@@ -1,5 +1,8 @@
 # ReCase
 
+[![crates-io](https://img.shields.io/crates/v/recase.svg)](https://crates.io/crates/recase)
+[![api-docs](https://docs.rs/recase/badge.svg)](https://docs.rs/recase)
+![Maintenance](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 Changes the input text to the desired convention case.

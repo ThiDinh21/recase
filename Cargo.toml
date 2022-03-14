@@ -16,3 +16,6 @@ categories = ["text-processing"]
 
 [dependencies]
 unicode-segmentation = "1.9.0"
+
+[badges.maintenance]
+status = "actively-developed"
