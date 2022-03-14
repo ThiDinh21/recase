@@ -1,7 +1,7 @@
 use unicode_segmentation::UnicodeSegmentation;
 
 pub fn slice_into_words(input: String) -> Vec<String> {
-    pub const SYMBOLS: [&'static str; 6] = [" ", ".", "/", "_", "-", "\\"];
+    pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
 
     let mut words: Vec<String> = vec![];
     let mut temp_word: Vec<&str> = vec![];
@@ -24,11 +24,9 @@ pub fn slice_into_words(input: String) -> Vec<String> {
             continue;
         }
         // slice when an uppercase letter is detected
-        if is_uppercase(c) {
-            if !temp_word.is_empty() {
-                words.push(vec_to_lowercase(&temp_word));
-                temp_word.clear();
-            }
+        if is_uppercase(c) && !temp_word.is_empty() {
+            words.push(vec_to_lowercase(&temp_word));
+            temp_word.clear();
         }
         temp_word.push(c);
     }

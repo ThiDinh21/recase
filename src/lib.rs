@@ -25,7 +25,7 @@ impl ReCase {
     /// The method takes a String as an input and will panic if given an empty string.
     pub fn new(original_text: String) -> ReCase {
         let words = utils::slice_into_words(original_text.clone());
-        if words.len() < 1 {
+        if words.is_empty() {
             panic!("Unable to separate words from input");
         }
         ReCase {
