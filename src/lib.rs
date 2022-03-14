@@ -34,6 +34,13 @@ impl ReCase {
         }
     }
 
+    /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into
+    /// supported convention cases.
+    /// The method takes a &str as an input and will panic if given an empty string.
+    pub fn from_str(original_text: &str) -> ReCase {
+        ReCase::new(original_text.to_string())
+    }
+
     /// Returns a clone of the original String
     /// ## Example
     /// ```
@@ -275,6 +282,17 @@ mod recase_tests {
         assert_eq!(recase.words, vec!["test".to_string(), "input".to_string()]);
 
         let recase = ReCase::new("Test-input/Ütf8 ütf8".to_string());
+        assert_eq!(
+            recase.words,
+            vec![
+                "test".to_string(),
+                "input".to_string(),
+                "ütf8".to_string(),
+                "ütf8".to_string()
+            ]
+        );
+
+        let recase = ReCase::from_str("Test-input/Ütf8 ütf8");
         assert_eq!(
             recase.words,
             vec![
