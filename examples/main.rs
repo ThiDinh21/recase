@@ -3,7 +3,7 @@ use recase::ReCase;
 fn main() {
     const INPUT: &str = "Löng and meaningless-Ẽxample_Text";
 
-    let recase1 = ReCase::from_str(INPUT);
+    let recase1 = ReCase::new_from_str(INPUT);
     let recase2 = ReCase::new(String::from(INPUT));
 
     println!("{}", recase1.snake_case()); // Prints "löng_and_meaningless_ẽxample_text"
