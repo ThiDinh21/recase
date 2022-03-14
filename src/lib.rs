@@ -26,7 +26,7 @@ impl ReCase {
     pub fn new(original_text: String) -> ReCase {
         let words = utils::slice_into_words(original_text.clone());
         if words.is_empty() {
-            panic!("Unable to separate words from input");
+            panic!("Input string must not be empty");
         }
         ReCase {
             original_text,
@@ -272,8 +272,6 @@ mod recase_tests {
     use crate::ReCase;
 
     #[test]
-    #[ignore]
-    #[should_panic(expected = "Unable to separate words from input")]
     fn test_constructor() {
         let recase = ReCase::new("TestInput".to_string());
         assert_eq!(recase.words, vec!["test".to_string(), "input".to_string()]);
@@ -302,6 +300,12 @@ mod recase_tests {
                 "ütf8".to_string()
             ]
         );
+    }
+
+    #[test]
+    #[should_panic(expected = "Input string must not be empty")]
+    fn empty_input() {
+        let _recase = ReCase::new_from_str("");
     }
 
     #[test]

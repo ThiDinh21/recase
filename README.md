@@ -15,7 +15,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-recase = "0.1.1"
+recase = "0.2.0"
 ```
 
 <p>&nbsp</p>
