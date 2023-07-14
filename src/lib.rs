@@ -310,32 +310,32 @@ mod recase_tests {
 
     #[test]
     fn test_normal_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.normal_case(), "who is god and why is she matsuri");
+        let recase = ReCase::new("long_random_text".to_string());
+        assert_eq!(recase.normal_case(), "long random text");
 
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.normal_case(), "誰 is god and why is she matsuri");
+        let recase = ReCase::new("誰_long_random_text".to_string());
+        assert_eq!(recase.normal_case(), "誰 long random text");
 
-        let recase = ReCase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.normal_case(), "w h o is god and why is she matsuri");
+        let recase = ReCase::new("LONG_random_text".to_string());
+        assert_eq!(recase.normal_case(), "l o n g random text");
 
-        let recase = ReCase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.normal_case(), "ßho is god and why is she matsuri");
+        let recase = ReCase::new("ßlong_random_text".to_string());
+        assert_eq!(recase.normal_case(), "ßlong random text");
     }
 
     #[test]
     fn test_camel_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.camel_case(), "whoIsGodAndWhyIsSheMatsuri");
+        let recase = ReCase::new("random_text".to_string());
+        assert_eq!(recase.camel_case(), "randomText");
 
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.camel_case(), "誰IsGodAndWhyIsSheMatsuri");
+        let recase = ReCase::new("誰_randomText".to_string());
+        assert_eq!(recase.camel_case(), "誰RandomText");
 
-        let recase = ReCase::new("WHO_is_god_and_Why is she_Matsuri".to_string());
-        assert_eq!(recase.camel_case(), "wHOIsGodAndWhyIsSheMatsuri");
+        let recase = ReCase::new("RANdom text".to_string());
+        assert_eq!(recase.camel_case(), "rANdomText");
 
-        let recase = ReCase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
-        assert_eq!(recase.camel_case(), "ßhoIsGodAndWhyIsSShe?Mätßuri");
+        let recase = ReCase::new("ßändom ßext".to_string());
+        assert_eq!(recase.camel_case(), "ßändomSSext");
     }
 
     #[test]
