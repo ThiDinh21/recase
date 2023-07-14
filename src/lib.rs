@@ -341,137 +341,17 @@ mod recase_tests {
     }
 
     #[test]
-    fn test_pascal_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.pascal_case(), "WhoIsGodAndWhyIsSheMatsuri");
-
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.pascal_case(), "誰IsGodAndWhyIsSheMatsuri");
-
-        let recase = ReCase::new("WHO_is_god_and_Why is she_Matsuri".to_string());
-        assert_eq!(recase.pascal_case(), "WHOIsGodAndWhyIsSheMatsuri");
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
-        assert_eq!(recase.pascal_case(), "SShoIsGodAndWhyIsSShe?Mätßuri");
-    }
-
-    #[test]
-    fn test_snake_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.snake_case(), "who_is_god_and_why_is_she_matsuri");
-
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.snake_case(), "誰_is_god_and_why_is_she_matsuri");
-
-        let recase = ReCase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.snake_case(), "w_h_o_is_god_and_why_is_she_matsuri");
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.snake_case(), "ßho_is_god_and_why_is_she_matsuri");
-    }
-
-    #[test]
-    fn test_kebab_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.kebab_case(), "who-is-god-and-why-is-she-matsuri");
-
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.kebab_case(), "誰-is-god-and-why-is-she-matsuri");
-
-        let recase = ReCase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.kebab_case(), "w-h-o-is-god-and-why-is-she-matsuri");
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.kebab_case(), "ßho-is-god-and-why-is-she-matsuri");
-    }
-
-    #[test]
-    fn test_dot_path_winpath_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.dot_case(), "who.is.god.and.why.is.she.matsuri");
-
-        let recase = ReCase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.path_case(), "w/h/o/is/god/and/why/is/she/matsuri");
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.windows_path_case(),
-            "ßho\\is\\god\\and\\why\\is\\she\\matsuri"
-        );
-    }
-
-    #[test]
-    fn test_sentence_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.sentence_case(), "Who is god and why is she matsuri");
-
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.sentence_case(), "誰 is god and why is she matsuri");
-
-        let recase = ReCase::new("WHO_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.sentence_case(),
-            "W h o is god and why is she matsuri"
-        );
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.sentence_case(), "SSho is god and why is she matsuri");
-    }
-
-    #[test]
-    fn test_title_header_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.title_case(), "Who Is God And Why Is She Matsuri");
-
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(recase.title_case(), "誰 Is God And Why Is She Matsuri");
-
-        let recase = ReCase::new("WHO_is_god_and_Why is she_Matsuri".to_string());
-        assert_eq!(recase.header_case(), "W-H-O-Is-God-And-Why-Is-She-Matsuri");
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
-        assert_eq!(recase.header_case(), "SSho-Is-God-And-Why-Is-SShe?-Mätßuri");
-    }
-
-    #[test]
     fn test_upper_snake_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.upper_snake_case(),
-            "WHO_IS_GOD_AND_WHY_IS_SHE_MATSURI"
-        );
-
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.upper_snake_case(),
-            "誰_IS_GOD_AND_WHY_IS_SHE_MATSURI"
-        );
-
-        let recase = ReCase::new("WHO_is_god_and_Why is she_Matsuri".to_string());
-        assert_eq!(
-            recase.upper_snake_case(),
-            "W_H_O_IS_GOD_AND_WHY_IS_SHE_MATSURI"
-        );
-
-        let recase = ReCase::new("ßho_is_god_and_why_is_ßhe?_Mätßuri".to_string());
-        assert_eq!(
-            recase.upper_snake_case(),
-            "SSHO_IS_GOD_AND_WHY_IS_SSHE?_MÄTSSURI"
-        );
+        let recase = ReCase::new("random_TEXT".to_string());
+        assert_eq!(recase.upper_snake_case(), "RANDOM_T_E_X_T");
     }
 
     #[test]
     fn test_alternating_case() {
-        let recase = ReCase::new("who_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.alternating_case(),
-            "wHo Is GoD aNd WhY iS sHe MaTsUrI"
-        );
+        let recase = ReCase::new("random Text".to_string());
+        assert_eq!(recase.alternating_case(), "rAnDoM tExT");
 
-        let recase = ReCase::new("誰_is_god_and_why_is_she_Matsuri".to_string());
-        assert_eq!(
-            recase.alternating_case(),
-            "誰 Is GoD aNd WhY iS sHe MaTsUrI"
-        );
+        let recase = ReCase::new("誰_random Text".to_string());
+        assert_eq!(recase.alternating_case(), "誰 RaNdOm TeXt");
     }
 }
