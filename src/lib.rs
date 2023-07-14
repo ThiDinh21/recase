@@ -22,8 +22,9 @@ pub struct ReCase {
 impl ReCase {
     /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into
     /// supported convention cases.
-    /// The method takes a String as an input and will panic if given an empty string.
-    pub fn new(original_text: String) -> ReCase {
+    /// The method takes a &str or String as an input and will panic if given an empty string.
+    pub fn new<S: Into<String>>(original_text: S) -> ReCase {
+        let original_text = original_text.into();
         let words = utils::slice_into_words(original_text.clone());
         if words.is_empty() {
             panic!("Input string must not be empty");
@@ -273,7 +274,7 @@ mod recase_tests {
 
     #[test]
     fn test_constructor() {
-        let recase = ReCase::new("TestInput".to_string());
+        let recase = ReCase::new("TestInput");
         assert_eq!(recase.words, vec!["test".to_string(), "input".to_string()]);
 
         let recase = ReCase::new("test_input".to_string());
