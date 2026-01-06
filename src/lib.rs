@@ -240,9 +240,79 @@ impl ReCase {
     }
 }
 
+pub trait Casing {
+    fn to_normal_case(&self) -> String;
+    fn to_camel_case(&self) -> String;
+    fn to_pascal_case(&self) -> String;
+    fn to_snake_case(&self) -> String;
+    fn to_kebab_case(&self) -> String;
+    fn to_dot_case(&self) -> String;
+    fn to_path_case(&self) -> String;
+    fn to_windows_path_case(&self) -> String;
+    fn to_sentence_case(&self) -> String;
+    fn to_title_case(&self) -> String;
+    fn to_header_case(&self) -> String;
+    fn to_upper_snake_case(&self) -> String;
+    fn to_alternating_case(&self) -> String;
+}
+
+impl Casing for str {
+    fn to_normal_case(&self) -> String {
+        ReCase::new(self).normal_case()
+    }
+
+    fn to_camel_case(&self) -> String {
+        ReCase::new(self).camel_case()
+    }
+
+    fn to_pascal_case(&self) -> String {
+        ReCase::new(self).pascal_case()
+    }
+
+    fn to_snake_case(&self) -> String {
+        ReCase::new(self).snake_case()
+    }
+
+    fn to_kebab_case(&self) -> String {
+        ReCase::new(self).kebab_case()
+    }
+
+    fn to_dot_case(&self) -> String {
+        ReCase::new(self).dot_case()
+    }
+
+    fn to_path_case(&self) -> String {
+        ReCase::new(self).path_case()
+    }
+
+    fn to_windows_path_case(&self) -> String {
+        ReCase::new(self).windows_path_case()
+    }
+
+    fn to_sentence_case(&self) -> String {
+        ReCase::new(self).sentence_case()
+    }
+
+    fn to_title_case(&self) -> String {
+        ReCase::new(self).title_case()
+    }
+
+    fn to_header_case(&self) -> String {
+        ReCase::new(self).header_case()
+    }
+
+    fn to_upper_snake_case(&self) -> String {
+        ReCase::new(self).upper_snake_case()
+    }
+
+    fn to_alternating_case(&self) -> String {
+        ReCase::new(self).alternating_case()
+    }
+}
+
 #[cfg(test)]
 mod recase_tests {
-    use crate::ReCase;
+    use crate::{Casing, ReCase};
 
     #[test]
     fn test_constructor() {
@@ -318,5 +388,14 @@ mod recase_tests {
 
         let recase = ReCase::new("誰_random Text".to_string());
         assert_eq!(recase.alternating_case(), "誰 RaNdOm TeXt");
+    }
+
+    #[test]
+    fn test_casing_trait() {
+        let s = "Hello World";
+
+        assert_eq!(s.to_kebab_case(), "hello-world");
+        assert_eq!(s.to_snake_case(), "hello_world");
+        assert_eq!(s.to_alternating_case(), "hElLo WoRlD");
     }
 }
