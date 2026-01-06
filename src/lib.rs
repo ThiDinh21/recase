@@ -91,13 +91,10 @@ impl ReCase {
             Some((first_word, the_rest)) => the_rest
                 .iter()
                 .map(|s| utils::uppercase_first_letter(s))
-                .fold(
-                    utils::uppercase_first_letter(first_word).to_owned(),
-                    |mut acc, s| {
-                        acc.push_str(&s);
-                        acc
-                    },
-                ),
+                .fold(utils::uppercase_first_letter(first_word), |mut acc, s| {
+                    acc.push_str(&s);
+                    acc
+                }),
         }
     }
 
@@ -221,26 +218,25 @@ impl ReCase {
     /// ```
     pub fn alternating_case(&self) -> String {
         let mut uppercase = true;
+        let mut res = String::with_capacity(self.original_text.len());
 
-        self.words
-            .iter()
-            .map(|w| {
-                // Alternately recasing each letter of each word
-                let chars = w.graphemes(true);
-                chars
-                    .map(|c| {
-                        uppercase = !uppercase;
-                        if uppercase {
-                            c.to_uppercase()
-                        } else {
-                            c.to_lowercase()
-                        }
-                    })
-                    .collect::<Vec<String>>()
-                    .join("")
-            })
-            .collect::<Vec<String>>()
-            .join(" ")
+        for (i, word) in self.words.iter().enumerate() {
+            if i != 0 {
+                res.push_str(" ");
+            }
+
+            let chars = word.graphemes(true);
+            chars.for_each(|c| {
+                uppercase = !uppercase;
+                if uppercase {
+                    res.push_str(&c.to_uppercase());
+                } else {
+                    res.push_str(&c.to_lowercase());
+                }
+            });
+        }
+
+        res
     }
 }
 
