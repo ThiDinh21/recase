@@ -70,15 +70,15 @@ impl ReCase {
     /// assert_eq!(recase.camel_case(), String::from("exampleString"));
     /// ```
     pub fn camel_case(&self) -> String {
-        let mut words = self.words.clone().into_iter();
-        match words.next() {
+        match self.words.split_first() {
             None => panic!("The field \"words\" is empty"),
-            Some(s) => {
-                s + &words
-                    .map(|w| utils::uppercase_first_letter(&w))
-                    .collect::<Vec<String>>()
-                    .join("")
-            }
+            Some((first_word, the_rest)) => the_rest
+                .iter()
+                .map(|s| utils::uppercase_first_letter(s))
+                .fold(first_word.to_owned(), |mut acc, s| {
+                    acc.push_str(&s);
+                    acc
+                }),
         }
     }
 
@@ -89,16 +89,18 @@ impl ReCase {
     /// assert_eq!(recase.pascal_case(), String::from("ExampleString"));
     /// ```
     pub fn pascal_case(&self) -> String {
-        let mut words = self.words.clone().into_iter();
-        match words.next() {
+        match self.words.split_first() {
             None => panic!("The field \"words\" is empty"),
-            Some(s) => {
-                utils::uppercase_first_letter(&s)
-                    + &words
-                        .map(|w| utils::uppercase_first_letter(&w))
-                        .collect::<Vec<String>>()
-                        .join("")
-            }
+            Some((first_word, the_rest)) => the_rest
+                .iter()
+                .map(|s| utils::uppercase_first_letter(s))
+                .fold(
+                    utils::uppercase_first_letter(first_word).to_owned(),
+                    |mut acc, s| {
+                        acc.push_str(&s);
+                        acc
+                    },
+                ),
         }
     }
 
@@ -109,11 +111,7 @@ impl ReCase {
     /// assert_eq!(recase.snake_case(), String::from("example_string"));
     /// ```
     pub fn snake_case(&self) -> String {
-        self.words
-            .clone()
-            .into_iter()
-            .collect::<Vec<String>>()
-            .join("_")
+        self.words.join("_")
     }
 
     /// Returns a `kebab-case` version of the original String
@@ -123,11 +121,7 @@ impl ReCase {
     /// assert_eq!(recase.kebab_case(), String::from("example-string"));
     /// ```
     pub fn kebab_case(&self) -> String {
-        self.words
-            .clone()
-            .into_iter()
-            .collect::<Vec<String>>()
-            .join("-")
+        self.words.join("-")
     }
 
     /// Returns a `dot.case` version of the original String
@@ -137,11 +131,7 @@ impl ReCase {
     /// assert_eq!(recase.dot_case(), String::from("example.string"));
     /// ```
     pub fn dot_case(&self) -> String {
-        self.words
-            .clone()
-            .into_iter()
-            .collect::<Vec<String>>()
-            .join(".")
+        self.words.join(".")
     }
 
     /// Returns a `path/case` version of the original String
@@ -151,11 +141,7 @@ impl ReCase {
     /// assert_eq!(recase.path_case(), String::from("example/string"));
     /// ```
     pub fn path_case(&self) -> String {
-        self.words
-            .clone()
-            .into_iter()
-            .collect::<Vec<String>>()
-            .join("/")
+        self.words.join("/")
     }
 
     /// Returns a `windows\path\case` version of the original String
@@ -165,11 +151,7 @@ impl ReCase {
     /// assert_eq!(recase.windows_path_case(), String::from("example\\string"));
     /// ```
     pub fn windows_path_case(&self) -> String {
-        self.words
-            .clone()
-            .into_iter()
-            .collect::<Vec<String>>()
-            .join("\\")
+        self.words.join("\\")
     }
 
     /// Returns a `Sentence case` version of the original String
@@ -179,11 +161,15 @@ impl ReCase {
     /// assert_eq!(recase.sentence_case(), String::from("Example string"));
     /// ```
     pub fn sentence_case(&self) -> String {
-        let mut words = self.words.clone().into_iter();
-        match words.next() {
+        match self.words.split_first() {
             None => panic!("The field \"words\" is empty"),
-            Some(s) => {
-                utils::uppercase_first_letter(&s) + " " + &words.collect::<Vec<String>>().join(" ")
+            Some((first_word, the_rest)) => {
+                let mut res = utils::uppercase_first_letter(first_word);
+                for word in the_rest {
+                    res.push_str(" ");
+                    res.push_str(word);
+                }
+                res
             }
         }
     }
@@ -196,8 +182,7 @@ impl ReCase {
     /// ```
     pub fn title_case(&self) -> String {
         self.words
-            .clone()
-            .into_iter()
+            .iter()
             .map(|w| utils::uppercase_first_letter(&w))
             .collect::<Vec<String>>()
             .join(" ")
@@ -211,8 +196,7 @@ impl ReCase {
     /// ```
     pub fn header_case(&self) -> String {
         self.words
-            .clone()
-            .into_iter()
+            .iter()
             .map(|w| utils::uppercase_first_letter(&w))
             .collect::<Vec<String>>()
             .join("-")
@@ -226,8 +210,7 @@ impl ReCase {
     /// ```
     pub fn upper_snake_case(&self) -> String {
         self.words
-            .clone()
-            .into_iter()
+            .iter()
             .map(|w| w.to_uppercase())
             .collect::<Vec<String>>()
             .join("_")
@@ -243,8 +226,7 @@ impl ReCase {
         let mut uppercase = true;
 
         self.words
-            .clone()
-            .into_iter()
+            .iter()
             .map(|w| {
                 // Alternately recasing each letter of each word
                 let chars = w.graphemes(true);
