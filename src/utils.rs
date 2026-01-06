@@ -7,11 +7,10 @@ pub fn slice_into_words(input: String) -> Vec<String> {
     let mut temp_word: Vec<&str> = vec![];
 
     let vec_to_lowercase = |vec: &Vec<&str>| {
-        (*vec)
-            .clone()
-            .into_iter()
-            .collect::<String>()
-            .to_lowercase()
+        vec.iter()
+            .flat_map(|g| g.chars())
+            .flat_map(|c| c.to_lowercase())
+            .collect()
     };
 
     for c in input.graphemes(true) {
