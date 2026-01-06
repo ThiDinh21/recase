@@ -22,13 +22,10 @@ pub struct ReCase {
 impl ReCase {
     /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into
     /// supported convention cases.
-    /// The method takes a &str or a String as an input and will panic if given an empty string.
+    /// The method takes a &str or a String as an input.
     pub fn new<S: Into<String>>(original_text: S) -> ReCase {
         let original_text = original_text.into();
         let words = utils::slice_into_words(original_text.clone());
-        if words.is_empty() {
-            panic!("Input string must not be empty");
-        }
         ReCase {
             original_text,
             words,
@@ -37,8 +34,8 @@ impl ReCase {
 
     /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into
     /// supported convention cases.
-    /// The method takes a &str as an input and will panic if given an empty string.
-    #[deprecated(since = "0.3.0", note = "please use the \"new()\" constructor instead")]
+    /// The method takes a &str as an input.
+    #[deprecated(since = "0.3.0", note = "Please use the \"new()\" constructor instead")]
     pub fn new_from_str(original_text: &str) -> ReCase {
         ReCase::new(original_text.to_string())
     }
@@ -71,7 +68,7 @@ impl ReCase {
     /// ```
     pub fn camel_case(&self) -> String {
         match self.words.split_first() {
-            None => panic!("The field \"words\" is empty"),
+            None => "".to_owned(),
             Some((first_word, the_rest)) => the_rest
                 .iter()
                 .map(|s| utils::uppercase_first_letter(s))
@@ -90,7 +87,7 @@ impl ReCase {
     /// ```
     pub fn pascal_case(&self) -> String {
         match self.words.split_first() {
-            None => panic!("The field \"words\" is empty"),
+            None => "".to_owned(),
             Some((first_word, the_rest)) => the_rest
                 .iter()
                 .map(|s| utils::uppercase_first_letter(s))
@@ -162,7 +159,7 @@ impl ReCase {
     /// ```
     pub fn sentence_case(&self) -> String {
         match self.words.split_first() {
-            None => panic!("The field \"words\" is empty"),
+            None => "".to_owned(),
             Some((first_word, the_rest)) => {
                 let mut res = utils::uppercase_first_letter(first_word);
                 for word in the_rest {
@@ -280,12 +277,6 @@ mod recase_tests {
                 "ütf8".to_string()
             ]
         );
-    }
-
-    #[test]
-    #[should_panic(expected = "Input string must not be empty")]
-    fn empty_input() {
-        let _recase = ReCase::new("");
     }
 
     #[test]
