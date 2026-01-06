@@ -60,11 +60,7 @@ impl ReCase {
     /// assert_eq!(recase.normal_case(), String::from("example string"));
     /// ```
     pub fn normal_case(&self) -> String {
-        self.words
-            .clone()
-            .into_iter()
-            .collect::<Vec<String>>()
-            .join(" ")
+        self.words.join(" ")
     }
 
     /// Returns a `camelCase` version of the original String

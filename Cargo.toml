@@ -15,7 +15,4 @@ categories = ["text-processing"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-unicode-segmentation = "1.9.0"
-
-[badges.maintenance]
-status = "actively-developed"
+unicode-segmentation = "1.12.0"
