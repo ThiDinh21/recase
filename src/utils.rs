@@ -46,11 +46,14 @@ pub fn is_uppercase(character: &str) -> bool {
 }
 
 pub fn uppercase_first_letter(word: &str) -> String {
-    let s = String::from(word);
-    let mut chars = s.graphemes(true);
+    let mut chars = word.graphemes(true);
     match chars.next() {
         None => panic!("Passing empty words"),
-        Some(c) => c.to_uppercase() + chars.as_str(),
+        Some(first_char) => {
+            let mut res = first_char.to_uppercase();
+            res.push_str(chars.as_str());
+            res
+        }
     }
 }
 
