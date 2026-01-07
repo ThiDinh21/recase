@@ -50,7 +50,7 @@ impl ReCase {
         self.original_text.clone()
     }
 
-    /// Returns a `normal case` version of the original String
+    /// Returns a `normal case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -60,7 +60,7 @@ impl ReCase {
         self.words.join(" ")
     }
 
-    /// Returns a `camelCase` version of the original String
+    /// Returns a `camelCase` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -79,7 +79,7 @@ impl ReCase {
         }
     }
 
-    /// Returns a `PascalCase` version of the original String
+    /// Returns a `PascalCase` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -98,7 +98,7 @@ impl ReCase {
         }
     }
 
-    /// Returns a `snake_case` version of the original String
+    /// Returns a `snake_case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -108,7 +108,7 @@ impl ReCase {
         self.words.join("_")
     }
 
-    /// Returns a `kebab-case` version of the original String
+    /// Returns a `kebab-case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -118,7 +118,7 @@ impl ReCase {
         self.words.join("-")
     }
 
-    /// Returns a `dot.case` version of the original String
+    /// Returns a `dot.case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -128,7 +128,7 @@ impl ReCase {
         self.words.join(".")
     }
 
-    /// Returns a `path/case` version of the original String
+    /// Returns a `path/case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -138,7 +138,7 @@ impl ReCase {
         self.words.join("/")
     }
 
-    /// Returns a `windows\path\case` version of the original String
+    /// Returns a `windows\path\case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -148,7 +148,7 @@ impl ReCase {
         self.words.join("\\")
     }
 
-    /// Returns a `Sentence case` version of the original String
+    /// Returns a `Sentence case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -168,7 +168,7 @@ impl ReCase {
         }
     }
 
-    /// Returns a `Title Case` version of the original String
+    /// Returns a `Title Case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -182,7 +182,7 @@ impl ReCase {
             .join(" ")
     }
 
-    /// Returns a `Header-Case` version of the original String
+    /// Returns a `Header-Case` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -196,7 +196,7 @@ impl ReCase {
             .join("-")
     }
 
-    /// Returns a `UPPER_SNAKE_CASE` version of the original String
+    /// Returns a `UPPER_SNAKE_CASE` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -210,7 +210,7 @@ impl ReCase {
             .join("_")
     }
 
-    /// Returns a `AlTeRnAtInG cAsE` version of the original String
+    /// Returns a `AlTeRnAtInG cAsE` version of the input text as a new String
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new(String::from("Example String"));
@@ -241,7 +241,7 @@ impl ReCase {
 }
 
 pub trait Casing {
-    /// Returns a `normal case` version of the original String
+    /// Returns a `normal case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -249,7 +249,7 @@ pub trait Casing {
     /// ```
     fn to_normal_case(&self) -> String;
 
-    /// Returns a `camelCase` version of the original String
+    /// Returns a `camelCase` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -257,7 +257,7 @@ pub trait Casing {
     /// ```
     fn to_camel_case(&self) -> String;
 
-    /// Returns a `PascalCase` version of the original String
+    /// Returns a `PascalCase` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -265,7 +265,7 @@ pub trait Casing {
     /// ```
     fn to_pascal_case(&self) -> String;
 
-    /// Returns a `snake_case` version of the original String
+    /// Returns a `snake_case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -273,7 +273,7 @@ pub trait Casing {
     /// ```
     fn to_snake_case(&self) -> String;
 
-    /// Returns a `kebab-case` version of the original String
+    /// Returns a `kebab-case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -281,7 +281,7 @@ pub trait Casing {
     /// ```
     fn to_kebab_case(&self) -> String;
 
-    /// Returns a `dot.case` version of the original String
+    /// Returns a `dot.case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -289,7 +289,7 @@ pub trait Casing {
     /// ```
     fn to_dot_case(&self) -> String;
 
-    /// Returns a `path/case` version of the original String
+    /// Returns a `path/case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -297,7 +297,7 @@ pub trait Casing {
     /// ```
     fn to_path_case(&self) -> String;
 
-    /// Returns a `windows\path\case` version of the original String
+    /// Returns a `windows\path\case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -305,7 +305,7 @@ pub trait Casing {
     /// ```
     fn to_windows_path_case(&self) -> String;
 
-    /// Returns a `Sentence case` version of the original String
+    /// Returns a `Sentence case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -313,7 +313,7 @@ pub trait Casing {
     /// ```
     fn to_sentence_case(&self) -> String;
 
-    /// Returns a `Title Case` version of the original String
+    /// Returns a `Title Case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -321,7 +321,7 @@ pub trait Casing {
     /// ```
     fn to_title_case(&self) -> String;
 
-    /// Returns a `Header-Case` version of the original String
+    /// Returns a `Header-Case` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -329,7 +329,7 @@ pub trait Casing {
     /// ```
     fn to_header_case(&self) -> String;
 
-    /// Returns a `UPPER_SNAKE_CASE` version of the original String
+    /// Returns a `UPPER_SNAKE_CASE` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
@@ -337,7 +337,7 @@ pub trait Casing {
     /// ```
     fn to_upper_snake_case(&self) -> String;
 
-    /// Returns a `AlTeRnAtInG cAsE` version of the original String
+    /// Returns a `AlTeRnAtInG cAsE` version of the input text as a new String
     /// ## Example
     /// ```
     /// use recase::Casing;
