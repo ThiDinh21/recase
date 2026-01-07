@@ -1,13 +1,13 @@
 [package]
 name = "recase"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 description = "Changes the convention case of input text."
 license = "BSD-2-Clause"
 readme = "README.md"
-authors = ["galatea21"]
-repository = "https://github.com/galatea21/recase"
-homepage = "https://github.com/galatea21/recase"
+authors = ["ThiDinh21"]
+repository = "https://github.com/ThiDinh21/recase"
+homepage = "https://github.com/ThiDinh21/recase"
 documentation = "https://docs.rs/recase"
 keywords = ["recase", "text", "case", "convention"]
 categories = ["text-processing"]
