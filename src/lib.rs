@@ -241,18 +241,108 @@ impl ReCase {
 }
 
 pub trait Casing {
+    /// Returns a `normal case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_normal_case(), "example string");
+    /// ```
     fn to_normal_case(&self) -> String;
+
+    /// Returns a `camelCase` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_camel_case(), String::from("exampleString"));
+    /// ```
     fn to_camel_case(&self) -> String;
+
+    /// Returns a `PascalCase` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_pascal_case(), String::from("ExampleString"));
+    /// ```
     fn to_pascal_case(&self) -> String;
+
+    /// Returns a `snake_case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_snake_case(), String::from("example_string"));
+    /// ```
     fn to_snake_case(&self) -> String;
+
+    /// Returns a `kebab-case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_kebab_case(), String::from("example-string"));
+    /// ```
     fn to_kebab_case(&self) -> String;
+
+    /// Returns a `dot.case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_dot_case(), String::from("example.string"));
+    /// ```
     fn to_dot_case(&self) -> String;
+
+    /// Returns a `path/case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_path_case(), String::from("example/string"));
+    /// ```
     fn to_path_case(&self) -> String;
+
+    /// Returns a `windows\path\case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_windows_path_case(), String::from("example\\string"));
+    /// ```
     fn to_windows_path_case(&self) -> String;
+
+    /// Returns a `Sentence case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_sentence_case(), String::from("Example string"));
+    /// ```
     fn to_sentence_case(&self) -> String;
+
+    /// Returns a `Title Case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_title_case(), String::from("Example String"));
+    /// ```
     fn to_title_case(&self) -> String;
+
+    /// Returns a `Header-Case` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_header_case(), String::from("Example-String"));
+    /// ```
     fn to_header_case(&self) -> String;
+
+    /// Returns a `UPPER_SNAKE_CASE` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_upper_snake_case(), String::from("EXAMPLE_STRING"));
+    /// ```
     fn to_upper_snake_case(&self) -> String;
+
+    /// Returns a `AlTeRnAtInG cAsE` version of the original String
+    /// ## Example
+    /// ```
+    /// use recase::Casing;
+    /// assert_eq!("Example String".to_alternating_case(), String::from("eXaMpLe StRiNg"));
+    /// ```
     fn to_alternating_case(&self) -> String;
 }
 
