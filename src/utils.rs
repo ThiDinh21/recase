@@ -18,9 +18,11 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
     type Item = (usize, usize); // Start and end index of a word
 
     fn next(&mut self) -> Option<Self::Item> {
+        // In this method c0, c1, c2 are the 3 next characters, not the current one
+        // i.e. c0 would be the result of graphemes.next()
         pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
         let graphemes = self.graphemes.by_ref();
-        let mut curr_word_start = 0;
+        let mut word_start_index = 0;
         let mut can_start_new_word = true;
 
         // If c0 is None -> end of str -> is boudnary
@@ -32,30 +34,34 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
             is_uppercase(c)
         }
 
+        // Loop until got 1 complete word then return Some(word)
+        // None if no word found
+        // Ignore all listed special characters
         loop {
             // slice when a symbol is detected or end of str
             let is_c0_boundary = graphemes.peek().map_or(true, |c| check_boundary(c));
-
             if is_c0_boundary {
-                if let Some((index, _)) = graphemes.next() {
+                if let Some((index, _boundary)) = graphemes.next() {
                     // Ignore boundaries at the start of the word
                     if can_start_new_word {
                         continue;
                     }
-                    return Some((curr_word_start, index));
+                    // Return the option to the current word's indexes since a boundary is reached
+                    return Some((word_start_index, index));
                 }
                 return None;
             }
+
             // Check if c1 is end of str
-            // Ex: hello world -> c0 is at d, c1 is None
+            // Ex: hello world -> currently at "l", c0 is at "d", c1 is None
             if graphemes.peek().is_none() {
                 if let Some((index, g)) = graphemes.next() {
                     // Edge case: only 1 letter as last word
                     // Ex: hello_world-x
                     if can_start_new_word {
-                        curr_word_start = index;
+                        word_start_index = index;
                     }
-                    return Some((curr_word_start, index + g.len()));
+                    return Some((word_start_index, index + g.len()));
                 }
                 return None;
             }
@@ -70,32 +76,30 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
             graphemes.reset_peek();
 
             // If UPPER - UPPER - LOWER -> is a boundary
-            // Ex: HTMLFile -> c0 is at L
+            // i.e. HTMLFile -> c0 is at "L" , c1 at "F", c2 at "i"
             if is_c0_uppercase && is_c1_uppercase && is_c2_lowercase {
                 if let Some((index, g)) = graphemes.next() {
-                    return Some((curr_word_start, index + g.len()));
+                    return Some((word_start_index, index + g.len()));
                 }
                 return None;
             }
 
             // If LOWER - UPPER -> is a boundary
+            // i.e. helloWorld  -> c0 is "o", c1 is "W"
             if !is_c0_uppercase && is_c1_uppercase {
                 if let Some((index, g)) = graphemes.next() {
                     // Edge case: only 1 letter before this boundary and the last one
                     // Ex: .cD
                     if can_start_new_word {
-                        curr_word_start = index;
+                        word_start_index = index;
                     }
-                    dbg!(index);
-                    dbg!(g);
-                    return Some((curr_word_start, index + g.len()));
+                    return Some((word_start_index, index + g.len()));
                 }
                 return None;
             }
-            dbg!(curr_word_start);
             let (index, _) = graphemes.next().unwrap();
             if can_start_new_word {
-                curr_word_start = index;
+                word_start_index = index;
                 can_start_new_word = false;
             }
         }
