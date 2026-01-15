@@ -1,6 +1,8 @@
 use itertools::{Itertools, MultiPeek};
 use unicode_segmentation::{GraphemeIndices, UnicodeSegmentation};
 
+pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
+
 struct WordSplit<'a> {
     graphemes: MultiPeek<GraphemeIndices<'a>>,
 }
@@ -20,40 +22,32 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
     fn next(&mut self) -> Option<Self::Item> {
         // In this method c0, c1, c2 are the 3 next characters, not the current one
         // i.e. c0 would be the result of graphemes.next()
-        pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
         let graphemes = self.graphemes.by_ref();
         let mut word_start_index = 0;
         let mut can_start_new_word = true;
-
-        // If c0 is None -> end of str -> is boudnary
-        // If c0 is a symbol -> is boundary
-        fn check_boundary((_, c): &(usize, &str)) -> bool {
-            SYMBOLS.contains(c)
-        }
-        fn check_uppercase((_, c): &(usize, &str)) -> bool {
-            is_uppercase(c)
-        }
 
         // Loop until got 1 complete word then return Some(word)
         // None if no word found
         // Ignore all listed special characters
         loop {
             // Analyze c0
+            // If c0 is None -> end of str -> is boundary
+            // If c0 is a symbol -> is boundary
             let peek0 = graphemes.peek();
-            let is_c0_boundary = peek0.map_or(true, |c| check_boundary(c));
-            let is_c0_uppercase = peek0.map_or(false, |c| check_uppercase(c));
+            let is_c0_boundary = peek0.map_or(true, |(_, c)| SYMBOLS.contains(c));
+            let is_c0_uppercase = peek0.map_or(false, |(_, c)| is_uppercase(c));
             let c0_len = peek0.map_or(0, |(_, c)| c.len());
 
             // Analyze c1
             let peek1 = graphemes.peek();
             let is_c1_none = peek1.is_none();
-            let is_c1_uppercase = peek1.map_or(false, |c| check_uppercase(c));
+            let is_c1_uppercase = peek1.map_or(false, |(_, c)| is_uppercase(c));
 
             // Analyze c2
             let peek2 = graphemes.peek();
             // Check if c2 is neither an uppercase letter nor special char nor end of str
             let is_c2_lowercase =
-                peek2.map_or(false, |c| !check_uppercase(c) && !check_boundary(c));
+                peek2.map_or(false, |(_, c)| !is_uppercase(c) && !SYMBOLS.contains(c));
 
             // 1. Check boundary
             // slice when a symbol is detected or end of str
