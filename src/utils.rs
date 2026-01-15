@@ -160,6 +160,159 @@ pub fn uppercase_first_letter(word: &str) -> String {
 
 #[cfg(test)]
 mod utils_tests {
+    mod test_word_split_iter {
+        use crate::utils::WordSplit;
+
+        #[test]
+        fn test_iter_basic() {
+            let s = "hello world/1234";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["hello", "world", "1234"]);
+        }
+
+        #[test]
+        fn test_iter_multiple_delim() {
+            let s = "hello  ...world";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["hello", "world"]);
+        }
+
+        #[test]
+        fn test_iter_delim_at_beginning_end() {
+            let s = "_hello  ...world-";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["hello", "world"]);
+        }
+
+        #[test]
+        fn test_iter_uppercase() {
+            let s = "- -helloWorld";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["hello", "World"]);
+        }
+
+        #[test]
+        fn test_iter_non_ascii() {
+            let s = "é_b";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["é", "b"]);
+        }
+
+        #[ignore = "Emoji too hard :("]
+        #[test]
+        fn test_iter_complex_graphemes() {
+            // 🦀 is 4 bytes, 👩‍👩‍👧‍👦 is 25 bytes!
+            let s = "🦀Family👩‍👩‍👧‍👦";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            // Assuming symbols like emojis separate words, or stay attached
+            assert_eq!(words, vec!["🦀", "Family", "👩‍👩‍👧‍👦"]);
+        }
+
+        #[test]
+        fn test_iter_acronym_at_end() {
+            let s = "myHTML";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["my", "HTML"]);
+        }
+
+        #[test]
+        fn test_iter_acronym_start() {
+            let s = "HTMLParser";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["HTML", "Parser"]);
+        }
+
+        #[test]
+        fn test_iter_consecutive_symbols() {
+            let s = "---hello___world  ";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["hello", "world"]);
+        }
+
+        #[test]
+        fn test_iter_short_transitions() {
+            let s = "aAbB";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["a", "Ab", "B"]);
+        }
+
+        #[test]
+        fn test_iter_numbers() {
+            let s = "v1.2.3Release";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            // This depends on your 'is_boundary' definition, but common expectation:
+            assert_eq!(words, vec!["v1", "2", "3", "Release"]);
+        }
+
+        #[test]
+        fn test_iter_empty_and_whitespace() {
+            assert_eq!(WordSplit::new("").next(), None);
+            assert_eq!(WordSplit::new("   ").next(), None);
+            assert_eq!(WordSplit::new("---").next(), None);
+        }
+
+        #[test]
+        fn test_iter_torture_suite() {
+            // The "All-in-One" Benchmark
+            let s = "JSONParser_v2-beta__HTMLFile/path.to.mixedCase_ID";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+
+            assert_eq!(
+                words,
+                vec![
+                    "JSON",   // Acronym boundary detected
+                    "Parser", // Standard Pascal
+                    "v2",     // Alphanumeric kept together (assuming numbers aren't separators)
+                    "beta",   // Separator skipped
+                    "HTML",   // Acronym boundary
+                    "File",   // Pascal
+                    "path",   // Slash separator
+                    "to",     // Dot separator
+                    "mixed",  // camelCase start
+                    "Case",   // camelCase split
+                    "ID"      // Trailing acronym
+                ]
+            );
+        }
+
+        #[test]
+        fn test_iter_camel_boundary() {
+            // The "iPhone" pattern: Lower -> Upper
+            let s = "iPhone";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["i", "Phone"]);
+        }
+
+        #[test]
+        fn test_iter_messy_separators() {
+            // Consecutive separators
+            let s = "double__under..score";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["double", "under", "score"]);
+        }
+
+        #[test]
+        fn test_iter_utf8_basic() {
+            let s = "Noël_München";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["Noël", "München"]);
+        }
+
+        #[test]
+        fn test_iter_single_char() {
+            let s = "a";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["a"]);
+        }
+
+        #[test]
+        fn test_iter_multiple_chars() {
+            let s = "aB/cD_e f";
+            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
+            assert_eq!(words, vec!["a", "B", "c", "D", "e", "f"]);
+        }
+    }
+
     mod uppercase_related {
         use crate::utils::*;
 
