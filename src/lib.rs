@@ -19,6 +19,21 @@ pub struct ReCase {
     words: Vec<String>,
 }
 
+// #[derive(Debug)]
+// pub struct RecaseRef<'a> {
+//     original_text: &'a str,
+//     words: Vec<&'a str>,
+// }
+
+// impl<'a> RecaseRef<'a> {
+//     fn new(original_text: &str) -> Self {
+//         RecaseRef {
+//             original_text,
+//             words: slice_into_words_ref(original_text),
+//         }
+//     }
+// }
+
 impl ReCase {
     /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into
     /// supported convention cases.

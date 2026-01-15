@@ -1,4 +1,106 @@
-use unicode_segmentation::UnicodeSegmentation;
+use itertools::{Itertools, MultiPeek};
+use unicode_segmentation::{GraphemeIndices, UnicodeSegmentation};
+
+struct WordSplit<'a> {
+    graphemes: MultiPeek<GraphemeIndices<'a>>,
+}
+
+impl<'heystack_> WordSplit<'heystack_> {
+    fn new(heystack: &'heystack_ str) -> Self {
+        WordSplit {
+            // reminder: heystack.grapheme_indices(is_extended),
+            graphemes: heystack.grapheme_indices(true).multipeek(),
+        }
+    }
+}
+
+impl<'heystack> Iterator for WordSplit<'heystack> {
+    type Item = (usize, usize); // Start and end index of a word
+
+    fn next(&mut self) -> Option<Self::Item> {
+        pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
+        let graphemes = self.graphemes.by_ref();
+        let mut curr_word_start = 0;
+        let mut can_start_new_word = true;
+
+        // If c0 is None -> end of str -> is boudnary
+        // If c0 is a symbol -> is boundary
+        fn check_boundary((_, c): &(usize, &str)) -> bool {
+            SYMBOLS.contains(c)
+        }
+        fn check_uppercase((_, c): &(usize, &str)) -> bool {
+            is_uppercase(c)
+        }
+
+        loop {
+            // slice when a symbol is detected or end of str
+            let is_c0_boundary = graphemes.peek().map_or(true, |c| check_boundary(c));
+
+            if is_c0_boundary {
+                if let Some((index, _)) = graphemes.next() {
+                    // Ignore boundaries at the start of the word
+                    if can_start_new_word {
+                        continue;
+                    }
+                    return Some((curr_word_start, index));
+                }
+                return None;
+            }
+            // Check if c1 is end of str
+            // Ex: hello world -> c0 is at d, c1 is None
+            if graphemes.peek().is_none() {
+                if let Some((index, g)) = graphemes.next() {
+                    // Edge case: only 1 letter as last word
+                    // Ex: hello_world-x
+                    if can_start_new_word {
+                        curr_word_start = index;
+                    }
+                    return Some((curr_word_start, index + g.len()));
+                }
+                return None;
+            }
+            graphemes.reset_peek();
+
+            let is_c0_uppercase = graphemes.peek().map_or(false, |c| check_uppercase(c));
+            let is_c1_uppercase = graphemes.peek().map_or(false, |c| check_uppercase(c));
+            // Check if c2 is neither an uppercase letter nor special char nor end of str
+            let is_c2_lowercase = graphemes
+                .peek()
+                .map_or(false, |c| !check_uppercase(c) && !check_boundary(c));
+            graphemes.reset_peek();
+
+            // If UPPER - UPPER - LOWER -> is a boundary
+            // Ex: HTMLFile -> c0 is at L
+            if is_c0_uppercase && is_c1_uppercase && is_c2_lowercase {
+                if let Some((index, g)) = graphemes.next() {
+                    return Some((curr_word_start, index + g.len()));
+                }
+                return None;
+            }
+
+            // If LOWER - UPPER -> is a boundary
+            if !is_c0_uppercase && is_c1_uppercase {
+                if let Some((index, g)) = graphemes.next() {
+                    // Edge case: only 1 letter before this boundary and the last one
+                    // Ex: .cD
+                    if can_start_new_word {
+                        curr_word_start = index;
+                    }
+                    dbg!(index);
+                    dbg!(g);
+                    return Some((curr_word_start, index + g.len()));
+                }
+                return None;
+            }
+            dbg!(curr_word_start);
+            let (index, _) = graphemes.next().unwrap();
+            if can_start_new_word {
+                curr_word_start = index;
+                can_start_new_word = false;
+            }
+        }
+    }
+}
 
 pub fn slice_into_words(input: String) -> Vec<String> {
     pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];

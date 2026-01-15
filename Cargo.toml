@@ -16,3 +16,4 @@ categories = ["text-processing"]
 
 [dependencies]
 unicode-segmentation = "1.12.0"
+itertools = "0.14.0"
