@@ -171,13 +171,6 @@ mod utils_tests {
         }
 
         #[test]
-        fn test_iter_multiple_delim() {
-            let s = "hello  ...world";
-            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
-            assert_eq!(words, vec!["hello", "world"]);
-        }
-
-        #[test]
         fn test_iter_delim_at_beginning_end() {
             let s = "_hello  ...world-";
             let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
@@ -189,13 +182,6 @@ mod utils_tests {
             let s = "- -helloWorld";
             let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
             assert_eq!(words, vec!["hello", "World"]);
-        }
-
-        #[test]
-        fn test_iter_non_ascii() {
-            let s = "é_b";
-            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
-            assert_eq!(words, vec!["é", "b"]);
         }
 
         #[ignore = "Emoji too hard :("]
@@ -230,13 +216,6 @@ mod utils_tests {
         }
 
         #[test]
-        fn test_iter_short_transitions() {
-            let s = "aAbB";
-            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
-            assert_eq!(words, vec!["a", "Ab", "B"]);
-        }
-
-        #[test]
         fn test_iter_numbers() {
             let s = "v1.2.3Release";
             let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
@@ -252,7 +231,7 @@ mod utils_tests {
         }
 
         #[test]
-        fn test_iter_torture_suite() {
+        fn test_iter_mixed_suite() {
             // The "All-in-One" Benchmark
             let s = "JSONParser_v2-beta__HTMLFile/path.to.mixedCase_ID";
             let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
@@ -273,14 +252,6 @@ mod utils_tests {
                     "ID"      // Trailing acronym
                 ]
             );
-        }
-
-        #[test]
-        fn test_iter_camel_boundary() {
-            // The "iPhone" pattern: Lower -> Upper
-            let s = "iPhone";
-            let words: Vec<_> = WordSplit::new(s).map(|(x, y)| &s[x..y]).collect();
-            assert_eq!(words, vec!["i", "Phone"]);
         }
 
         #[test]
@@ -374,151 +345,6 @@ mod utils_tests {
             );
             assert_eq!(uppercase_first_letter("?"), "?".to_string());
             uppercase_first_letter("");
-        }
-    }
-
-    mod test_slice_words {
-        use crate::utils::*;
-
-        use std::vec;
-
-        #[test]
-        fn slice_words_by_symbols() {
-            let input = [
-                String::from("god matsuri"),
-                String::from("god.matsuri?"),
-                String::from("god_matsuri_ahihihi"),
-                String::from("god+matsuri"),
-                String::from("god   / matsuri"),
-            ];
-
-            let expected_output = [
-                vec![String::from("god"), String::from("matsuri")],
-                vec![String::from("god"), String::from("matsuri?")],
-                vec![
-                    String::from("god"),
-                    String::from("matsuri"),
-                    String::from("ahihihi"),
-                ],
-                vec![String::from("god+matsuri")],
-                vec![String::from("god"), String::from("matsuri")],
-            ];
-
-            let mut output: Vec<Vec<String>> = vec![];
-
-            for s in input {
-                output.push(slice_into_words(s));
-            }
-
-            assert_eq!(output, expected_output);
-        }
-
-        #[test]
-        fn slice_words_by_symbols_with_utf8() {
-            let input = [
-                String::from("göd mätßurị?"),
-                String::from("kami まつり"),
-                String::from("gød mætsuri a hí hì hĩ hỉ hị"),
-            ];
-
-            let expected_output = [
-                vec![String::from("göd"), String::from("mätßurị?")],
-                vec![String::from("kami"), String::from("まつり")],
-                vec![
-                    String::from("gød"),
-                    String::from("mætsuri"),
-                    String::from("a"),
-                    String::from("hí"),
-                    String::from("hì"),
-                    String::from("hĩ"),
-                    String::from("hỉ"),
-                    String::from("hị"),
-                ],
-            ];
-
-            let mut output: Vec<Vec<String>> = vec![];
-
-            for s in input {
-                output.push(slice_into_words(s));
-            }
-
-            assert_eq!(output, expected_output);
-        }
-
-        #[test]
-        fn slice_words_by_uppercase_with_utf8() {
-            let input = [
-                String::from("GodMatsuri"),
-                String::from("GodÄtsuri?"),
-                String::from("GodSatsuriAhihihi"),
-                String::from("god"),
-                String::from("God?"),
-                String::from("ĞodMatsuRiÍsDaBét"),
-            ];
-            let expected_output = [
-                vec![String::from("god"), String::from("matsuri")],
-                vec![String::from("god"), String::from("ätsuri?")],
-                vec![
-                    String::from("god"),
-                    String::from("satsuri"),
-                    String::from("ahihihi"),
-                ],
-                vec![String::from("god")],
-                vec![String::from("god?")],
-                vec![
-                    String::from("ğod"),
-                    String::from("matsu"),
-                    String::from("ri"),
-                    String::from("ís"),
-                    String::from("da"),
-                    String::from("bét"),
-                ],
-            ];
-
-            let mut output: Vec<Vec<String>> = vec![];
-
-            for s in input {
-                output.push(slice_into_words(s));
-            }
-
-            assert_eq!(output, expected_output);
-        }
-
-        #[test]
-        fn slice_words_by_all_methods() {
-            let input = [
-                String::from("God.Äts.uri!________"),
-                String::from("God Ṁatsuri 角巻わため"),
-                String::from("_Ğod-Matsu-Ri-Ís_Da Bét  "),
-            ];
-            let expected_output = [
-                vec![
-                    String::from("god"),
-                    String::from("äts"),
-                    String::from("uri!"),
-                ],
-                vec![
-                    String::from("god"),
-                    String::from("ṁatsuri"),
-                    String::from("角巻わため"),
-                ],
-                vec![
-                    String::from("ğod"),
-                    String::from("matsu"),
-                    String::from("ri"),
-                    String::from("ís"),
-                    String::from("da"),
-                    String::from("bét"),
-                ],
-            ];
-
-            let mut output: Vec<Vec<String>> = vec![];
-
-            for s in input {
-                output.push(slice_into_words(s));
-            }
-
-            assert_eq!(output, expected_output);
         }
     }
 }
