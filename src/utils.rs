@@ -38,8 +38,25 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
         // None if no word found
         // Ignore all listed special characters
         loop {
+            // Analyze c0
+            let peek0 = graphemes.peek();
+            let is_c0_boundary = peek0.map_or(true, |c| check_boundary(c));
+            let is_c0_uppercase = peek0.map_or(false, |c| check_uppercase(c));
+            let c0_len = peek0.map_or(0, |(_, c)| c.len());
+
+            // Analyze c1
+            let peek1 = graphemes.peek();
+            let is_c1_none = peek1.is_none();
+            let is_c1_uppercase = peek1.map_or(false, |c| check_uppercase(c));
+
+            // Analyze c2
+            let peek2 = graphemes.peek();
+            // Check if c2 is neither an uppercase letter nor special char nor end of str
+            let is_c2_lowercase =
+                peek2.map_or(false, |c| !check_uppercase(c) && !check_boundary(c));
+
+            // 1. Check boundary
             // slice when a symbol is detected or end of str
-            let is_c0_boundary = graphemes.peek().map_or(true, |c| check_boundary(c));
             if is_c0_boundary {
                 if let Some((index, _boundary)) = graphemes.next() {
                     // Ignore boundaries at the start of the word
@@ -52,51 +69,47 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
                 return None;
             }
 
+            // 2. Check end of str
             // Check if c1 is end of str
             // Ex: hello world -> currently at "l", c0 is at "d", c1 is None
-            if graphemes.peek().is_none() {
-                if let Some((index, g)) = graphemes.next() {
+            if is_c1_none {
+                if let Some((index, _)) = graphemes.next() {
                     // Edge case: only 1 letter as last word
                     // Ex: hello_world-x
                     if can_start_new_word {
                         word_start_index = index;
                     }
-                    return Some((word_start_index, index + g.len()));
+                    return Some((word_start_index, index + c0_len));
                 }
                 return None;
             }
-            graphemes.reset_peek();
 
-            let is_c0_uppercase = graphemes.peek().map_or(false, |c| check_uppercase(c));
-            let is_c1_uppercase = graphemes.peek().map_or(false, |c| check_uppercase(c));
-            // Check if c2 is neither an uppercase letter nor special char nor end of str
-            let is_c2_lowercase = graphemes
-                .peek()
-                .map_or(false, |c| !check_uppercase(c) && !check_boundary(c));
-            graphemes.reset_peek();
-
+            // 3. Check acronym
             // If UPPER - UPPER - LOWER -> is a boundary
             // i.e. HTMLFile -> c0 is at "L" , c1 at "F", c2 at "i"
             if is_c0_uppercase && is_c1_uppercase && is_c2_lowercase {
-                if let Some((index, g)) = graphemes.next() {
-                    return Some((word_start_index, index + g.len()));
+                if let Some((index, _)) = graphemes.next() {
+                    return Some((word_start_index, index + c0_len));
                 }
                 return None;
             }
 
+            // 4. Check camel case boundary
             // If LOWER - UPPER -> is a boundary
             // i.e. helloWorld  -> c0 is "o", c1 is "W"
             if !is_c0_uppercase && is_c1_uppercase {
-                if let Some((index, g)) = graphemes.next() {
+                if let Some((index, _)) = graphemes.next() {
                     // Edge case: only 1 letter before this boundary and the last one
                     // Ex: .cD
                     if can_start_new_word {
                         word_start_index = index;
                     }
-                    return Some((word_start_index, index + g.len()));
+                    return Some((word_start_index, index + c0_len));
                 }
                 return None;
             }
+
+            // Handle lowercase character
             let (index, _) = graphemes.next().unwrap();
             if can_start_new_word {
                 word_start_index = index;
