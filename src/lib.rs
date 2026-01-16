@@ -2,6 +2,7 @@
 //!
 //! `recase` is a text processing utility that changes the input text into desired convention cases.
 
+use crate::utils::WordSplit;
 use unicode_segmentation::UnicodeSegmentation;
 
 mod utils;
@@ -19,20 +20,82 @@ pub struct ReCase {
     words: Vec<String>,
 }
 
-// #[derive(Debug)]
-// pub struct RecaseRef<'a> {
-//     original_text: &'a str,
-//     words: Vec<&'a str>,
-// }
+#[derive(Debug)]
+pub struct ReCaseRef<'a> {
+    original_text: &'a str,
+}
 
-// impl<'a> RecaseRef<'a> {
-//     fn new(original_text: &str) -> Self {
-//         RecaseRef {
-//             original_text,
-//             words: slice_into_words_ref(original_text),
-//         }
-//     }
-// }
+impl<'a> ReCaseRef<'a> {
+    pub fn new(original_text: &'a str) -> Self {
+        ReCaseRef { original_text }
+    }
+
+    fn words_iter(&self) -> impl Iterator<Item = &str> {
+        WordSplit::new(self.original_text).map(|(x, y)| &self.original_text[x..y])
+    }
+
+    #[inline(always)]
+    fn allocate_buffer(&self) -> String {
+        String::with_capacity(self.original_text.len())
+    }
+
+    /// Returns a `normal case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.normal_case(), String::from("example string"));
+    /// ```
+    pub fn normal_case(&self) -> String {
+        self.words_iter()
+            .fold(self.allocate_buffer(), |mut acc, s| {
+                if !acc.is_empty() {
+                    acc.push_str(" ");
+                }
+                for c in s.chars() {
+                    for lc in c.to_lowercase() {
+                        acc.push(lc);
+                    }
+                }
+                acc
+            })
+    }
+
+    /// Returns a `camelCase` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.camel_case(), String::from("exampleString"));
+    /// ```
+    pub fn camel_case(&self) -> String {
+        // match self.words_iter()
+        let words_iter = self.words_iter();
+        let mut res = self.allocate_buffer();
+
+        for (i, word) in words_iter.enumerate() {
+            let mut chars = word.chars();
+            // Push first character
+            if let Some(first_char) = chars.next() {
+                if i == 0 {
+                    for lc in first_char.to_lowercase() {
+                        res.push(lc);
+                    }
+                } else {
+                    for uc in first_char.to_uppercase() {
+                        res.push(uc);
+                    }
+                }
+            }
+            // Push the rest
+            chars.for_each(|c| {
+                for lc in c.to_lowercase() {
+                    res.push(lc);
+                }
+            });
+        }
+
+        res
+    }
+}
 
 impl ReCase {
     /// Create a new ReCase instance. Once created, it can be used repeatedly to convert the input text into

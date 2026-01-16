@@ -3,12 +3,13 @@ use unicode_segmentation::{GraphemeIndices, UnicodeSegmentation};
 
 pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
 
-struct WordSplit<'a> {
+#[derive(Debug)]
+pub struct WordSplit<'a> {
     graphemes: MultiPeek<GraphemeIndices<'a>>,
 }
 
 impl<'heystack_> WordSplit<'heystack_> {
-    fn new(heystack: &'heystack_ str) -> Self {
+    pub fn new(heystack: &'heystack_ str) -> Self {
         WordSplit {
             // reminder: heystack.grapheme_indices(is_extended),
             graphemes: heystack.grapheme_indices(true).multipeek(),
