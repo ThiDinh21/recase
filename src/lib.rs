@@ -290,6 +290,35 @@ impl<'a> ReCaseRef<'a> {
 
         acc
     }
+
+    /// Returns a `AlTeRnAtInG cAsE` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.alternating_case(), String::from("eXaMpLe StRiNg"));
+    /// ```
+    pub fn alternating_case(&self) -> String {
+        let mut should_uppercase = false;
+        let mut acc = self.allocate_buffer();
+
+        for word in self.words_iter() {
+            if !acc.is_empty() {
+                acc.push_str(" ");
+            }
+
+            let chars = word.chars();
+            for c in chars {
+                if should_uppercase {
+                    push_uppercase!(acc, c);
+                } else {
+                    push_lowercase!(acc, c);
+                }
+                should_uppercase = !should_uppercase;
+            }
+        }
+
+        acc
+    }
 }
 
 impl ReCase {
