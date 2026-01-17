@@ -112,18 +112,16 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
 }
 
 pub fn is_uppercase(grapheme: &str) -> bool {
-    if let Some(c) = grapheme.chars().next() {
-        return c.is_uppercase();
-    }
-    false
+    // If empty grapheme return false
+    grapheme.chars().next().map_or(false, |c| c.is_uppercase())
 }
 
-// Check if grapheme is a symbol of some sort. Null doesn't count as one.
 pub fn is_not_alphanumeric(grapheme: &str) -> bool {
-    if let Some(c) = grapheme.chars().next() {
-        return !c.is_alphanumeric();
-    }
-    false
+    // Check if grapheme is a symbol of some sort. Null doesn't count as one.
+    grapheme
+        .chars()
+        .next()
+        .map_or(false, |c| !c.is_alphanumeric())
 }
 
 #[cfg(test)]
