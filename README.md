@@ -15,7 +15,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-recase = "0.4.0"
+recase = "0.5.0"
 ```
 
 <p>&nbsp</p>
@@ -28,14 +28,13 @@ use recase::{ReCase, Casing};
 fn main() {
     const INPUT: &str = "Löng and meaningless-Ẽxample_Text";
 
-    // Using the Casing Trait
+    // Using the Casing trait
     println!("{}", INPUT.to_kebab_case());   // Prints "löng-and-meaningless-ẽxample-text"
 
-    let recase1 = ReCase::new(INPUT);
-    let recase2 = ReCase::new(String::from(INPUT));
-
-    println!("{}", recase1.snake_case());     // Prints "löng_and_meaningless_ẽxample_text"
-    println!("{}", recase2.camel_case());     // Prints "löngAndMeaninglessẼxampleText"
+    // Using ReCase struct
+    let recase = ReCase::new(INPUT);
+    println!("{}", recase.snake_case());     // Prints "löng_and_meaningless_ẽxample_text"
+    println!("{}", recase.camel_case());     // Prints "löngAndMeaninglessẼxampleText"
 }
 ```
 
@@ -63,8 +62,8 @@ fn main() {
 
 ## Limitations
 
--   The crate uses a single-buffer allocation strategy for most transformations to minimize memory overhead, but still not fully optimized.
--   Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß". There might be more cases that I failed to notice.
+- The crate uses a single-buffer allocation strategy for most transformations to minimize memory overhead, but still not fully optimized.
+- Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß". There might be more cases that I failed to notice.
 
 <p>&nbsp</p>
 
