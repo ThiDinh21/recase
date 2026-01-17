@@ -57,6 +57,19 @@ impl<'a> ReCaseRef<'a> {
         String::with_capacity(self.original_text.len())
     }
 
+    fn lowercase_with_delim(&self, delim: &str) -> String {
+        self.words_iter()
+            .fold(self.allocate_buffer(), |mut acc, s| {
+                if !acc.is_empty() {
+                    acc.push_str(delim);
+                }
+                for c in s.chars() {
+                    push_lowercase!(acc, c);
+                }
+                acc
+            })
+    }
+
     /// Returns a `normal case` version of the input text as a new String
     /// ## Example
     /// ```
@@ -64,16 +77,7 @@ impl<'a> ReCaseRef<'a> {
     /// assert_eq!(recase.normal_case(), String::from("example string"));
     /// ```
     pub fn normal_case(&self) -> String {
-        self.words_iter()
-            .fold(self.allocate_buffer(), |mut acc, s| {
-                if !acc.is_empty() {
-                    acc.push_str(" ");
-                }
-                for c in s.chars() {
-                    push_lowercase!(acc, c);
-                }
-                acc
-            })
+        self.lowercase_with_delim(" ")
     }
 
     /// Returns a `camelCase` version of the input text as a new String
@@ -129,22 +133,21 @@ impl<'a> ReCaseRef<'a> {
     /// Returns a `snake_case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCase::new("Example String");
+    /// let recase = recase::ReCaseRef::new("Example String");
     /// assert_eq!(recase.snake_case(), String::from("example_string"));
     /// ```
     pub fn snake_case(&self) -> String {
-        let mut acc = self.allocate_buffer();
+        self.lowercase_with_delim("-")
+    }
 
-        for word in self.words_iter() {
-            if !acc.is_empty() {
-                acc.push_str("_");
-            }
-            for c in word.chars() {
-                push_lowercase!(acc, c);
-            }
-        }
-
-        acc
+    /// Returns a `kebab-case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.kebab_case(), String::from("example-string"));
+    /// ```
+    pub fn kebab_case(&self) -> String {
+        self.lowercase_with_delim("-")
     }
 }
 
