@@ -67,7 +67,6 @@ impl<'a> ReCaseRef<'a> {
     /// assert_eq!(recase.camel_case(), String::from("exampleString"));
     /// ```
     pub fn camel_case(&self) -> String {
-        // match self.words_iter()
         let words_iter = self.words_iter();
         let mut res = self.allocate_buffer();
 
