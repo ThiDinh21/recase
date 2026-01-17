@@ -6,9 +6,8 @@ fn main() {
     // Using the Casing Trait
     println!("{}", INPUT.to_kebab_case()); // Prints "löng-and-meaningless-ẽxample-text"
 
-    let recase1 = ReCase::new(INPUT);
-    let recase2 = ReCase::new(String::from(INPUT));
+    let recase = ReCase::new(INPUT);
 
-    println!("{}", recase1.snake_case()); // Prints "löng_and_meaningless_ẽxample_text"
-    println!("{}", recase2.camel_case()); // Prints "löngAndMeaninglessẼxampleText"
+    println!("{}", recase.snake_case()); // Prints "löng_and_meaningless_ẽxample_text"
+    println!("{}", recase.camel_case()); // Prints "löngAndMeaninglessẼxampleText"
 }
