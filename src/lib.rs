@@ -25,6 +25,24 @@ pub struct ReCaseRef<'a> {
     original_text: &'a str,
 }
 
+// Push lowercase of c into s
+macro_rules! push_lowercase {
+    ($s:expr, $c:expr) => {
+        for lc in $c.to_lowercase() {
+            $s.push(lc);
+        }
+    };
+}
+
+// Push lowercase of chars into s
+macro_rules! push_uppercase {
+    ($s:expr, $c:expr) => {
+        for uc in $c.to_uppercase() {
+            $s.push(uc);
+        }
+    };
+}
+
 impl<'a> ReCaseRef<'a> {
     pub fn new(original_text: &'a str) -> Self {
         ReCaseRef { original_text }
@@ -52,9 +70,7 @@ impl<'a> ReCaseRef<'a> {
                     acc.push_str(" ");
                 }
                 for c in s.chars() {
-                    for lc in c.to_lowercase() {
-                        acc.push(lc);
-                    }
+                    push_lowercase!(acc, c);
                 }
                 acc
             })
@@ -75,20 +91,14 @@ impl<'a> ReCaseRef<'a> {
             // Push first character
             if let Some(first_char) = chars.next() {
                 if i == 0 {
-                    for lc in first_char.to_lowercase() {
-                        res.push(lc);
-                    }
+                    push_lowercase!(res, first_char);
                 } else {
-                    for uc in first_char.to_uppercase() {
-                        res.push(uc);
-                    }
+                    push_uppercase!(res, first_char);
                 }
             }
             // Push the rest
             chars.for_each(|c| {
-                for lc in c.to_lowercase() {
-                    res.push(lc);
-                }
+                push_lowercase!(res, c);
             });
         }
 
