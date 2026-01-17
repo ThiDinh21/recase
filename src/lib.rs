@@ -27,7 +27,7 @@ macro_rules! push_lowercase {
     };
 }
 
-// Push lowercase of chars into s
+// Push uppercase of chars into s
 macro_rules! push_uppercase {
     ($s:expr, $c:expr) => {
         for uc in $c.to_uppercase() {
