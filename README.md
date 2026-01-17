@@ -1,8 +1,8 @@
 # ReCase
 
 [![crates-io](https://img.shields.io/crates/v/recase.svg)](https://crates.io/crates/recase)
+[![Changelog](https://img.shields.io/badge/keep%20a-changelog-8A2BE2)](CHANGELOG.md)
 [![api-docs](https://docs.rs/recase/badge.svg)](https://docs.rs/recase)
-![Maintenance](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 Changes the input text to the desired convention case.
@@ -17,6 +17,13 @@ Add this to your `Cargo.toml`:
 [dependencies]
 recase = "0.5.0"
 ```
+
+<p>&nbsp</p>
+
+## Features
+
+- **Zero Allocation Logic**: Heavily optimized runtime and memory usage. It allocates exactly once (for the result string).
+- **Unicode Aware**: Handles complex graphemes, and acronyms correctly aside from emojis, they are treated the same as lowercase characters for now.
 
 <p>&nbsp</p>
 
@@ -62,8 +69,8 @@ fn main() {
 
 ## Limitations
 
-- The crate uses a single-buffer allocation strategy for most transformations to minimize memory overhead, but still not fully optimized.
-- Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß". There might be more cases that I failed to notice.
+- Emojis are treated the same as lEmoji will be counted as lowercase characterowercase characters.
+- Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß" or the dotless I (I) will turn into a normal i. There might be more cases that I failed to notice.
 
 <p>&nbsp</p>
 
