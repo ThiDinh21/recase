@@ -149,6 +149,36 @@ impl<'a> ReCaseRef<'a> {
     pub fn kebab_case(&self) -> String {
         self.lowercase_with_delim("-")
     }
+
+    /// Returns a `dot.case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.dot_case(), String::from("example.string"));
+    /// ```
+    pub fn dot_case(&self) -> String {
+        self.lowercase_with_delim(".")
+    }
+
+    /// Returns a `path/case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.path_case(), String::from("example/string"));
+    /// ```
+    pub fn path_case(&self) -> String {
+        self.lowercase_with_delim("/")
+    }
+
+    /// Returns a `windows\path\case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new(String::from("Example String"));
+    /// assert_eq!(recase.windows_path_case(), String::from("example\\string"));
+    /// ```
+    pub fn windows_path_case(&self) -> String {
+        self.lowercase_with_delim("\\")
+    }
 }
 
 impl ReCase {
