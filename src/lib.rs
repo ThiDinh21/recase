@@ -173,7 +173,7 @@ impl<'a> ReCaseRef<'a> {
     /// Returns a `windows\path\case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new(String::from("Example String"));
+    /// let recase = recase::ReCaseRef::new("Example String");
     /// assert_eq!(recase.windows_path_case(), String::from("example\\string"));
     /// ```
     pub fn windows_path_case(&self) -> String {
@@ -234,6 +234,58 @@ impl<'a> ReCaseRef<'a> {
             chars.for_each(|c| {
                 push_lowercase!(acc, c);
             });
+        }
+
+        acc
+    }
+
+    /// Returns a `Header-Case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.header_case(), String::from("Example-String"));
+    /// ```
+    pub fn header_case(&self) -> String {
+        let words_iter = self.words_iter();
+        let mut acc = self.allocate_buffer();
+
+        for (i, word) in words_iter.enumerate() {
+            let mut chars = word.chars();
+            if i != 0 {
+                acc.push_str("-");
+            }
+
+            // Push first character
+            if let Some(first_char) = chars.next() {
+                push_uppercase!(acc, first_char);
+            }
+
+            // Push the rest
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
+        }
+
+        acc
+    }
+
+    /// Returns a `UPPER_SNAKE_CASE` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.upper_snake_case(), String::from("EXAMPLE_STRING"));
+    /// ```
+    pub fn upper_snake_case(&self) -> String {
+        let mut acc = self.allocate_buffer();
+
+        for word in self.words_iter() {
+            if !acc.is_empty() {
+                acc.push_str("_");
+            }
+            let chars = word.chars();
+            for c in chars {
+                push_uppercase!(acc, c);
+            }
         }
 
         acc
