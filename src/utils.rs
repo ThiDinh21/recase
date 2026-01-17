@@ -11,7 +11,6 @@ pub struct WordSplit<'a> {
 impl<'heystack_> WordSplit<'heystack_> {
     pub fn new(heystack: &'heystack_ str) -> Self {
         WordSplit {
-            // reminder: heystack.grapheme_indices(is_extended),
             graphemes: heystack.grapheme_indices(true).multipeek(),
         }
     }
