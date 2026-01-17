@@ -113,12 +113,11 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
     }
 }
 
-pub fn is_uppercase(character: &str) -> bool {
-    let len = character.graphemes(true).count();
-    if len != 1 {
-        panic!("is_uppercase only take 1 character");
+pub fn is_uppercase(grapheme: &str) -> bool {
+    if let Some(c) = grapheme.chars().next() {
+        return c.is_uppercase();
     }
-    character == character.to_uppercase() && character != character.to_lowercase()
+    false
 }
 
 #[cfg(test)]
