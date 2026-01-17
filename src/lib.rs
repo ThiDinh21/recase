@@ -18,6 +18,24 @@ pub struct ReCase<'a> {
     original_text: &'a str,
 }
 
+// Push lowercase of c into s
+macro_rules! push_lowercase {
+    ($s:expr, $c:expr) => {
+        for lc in $c.to_lowercase() {
+            $s.push(lc);
+        }
+    };
+}
+
+// Push uppercase of chars into s
+macro_rules! push_uppercase {
+    ($s:expr, $c:expr) => {
+        for uc in $c.to_uppercase() {
+            $s.push(uc);
+        }
+    };
+}
+
 impl<'a> ReCase<'a> {
     pub fn new(original_text: &'a str) -> Self {
         ReCase { original_text }
@@ -34,11 +52,13 @@ impl<'a> ReCase<'a> {
 
     fn lowercase_with_delim(&self, delim: &str) -> String {
         self.words_iter()
-            .fold(self.allocate_buffer(), |mut acc, word| {
+            .fold(self.allocate_buffer(), |mut acc, s| {
                 if !acc.is_empty() {
                     acc.push_str(delim);
                 }
-                acc.extend(word.chars().flat_map(|c| c.to_lowercase()));
+                for c in s.chars() {
+                    push_lowercase!(acc, c);
+                }
                 acc
             })
     }
@@ -60,22 +80,23 @@ impl<'a> ReCase<'a> {
     /// assert_eq!(recase.camel_case(), String::from("exampleString"));
     /// ```
     pub fn camel_case(&self) -> String {
-        let mut words_iter = self.words_iter();
+        let words_iter = self.words_iter();
         let mut acc = self.allocate_buffer();
 
-        // First word is all lowercase
-        if let Some(word) = words_iter.next() {
-            acc.extend(word.chars().flat_map(|c| c.to_lowercase()));
-        }
-
-        for word in words_iter {
+        for (i, word) in words_iter.enumerate() {
             let mut chars = word.chars();
             // Push first character
             if let Some(first_char) = chars.next() {
-                acc.extend(first_char.to_uppercase());
+                if i == 0 {
+                    push_lowercase!(acc, first_char);
+                } else {
+                    push_uppercase!(acc, first_char);
+                }
             }
             // Push the rest
-            acc.extend(chars.flat_map(|c| c.to_lowercase()));
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
         }
 
         acc
@@ -92,10 +113,12 @@ impl<'a> ReCase<'a> {
         words_iter.fold(self.allocate_buffer(), |mut acc, word| {
             let mut chars = word.chars();
             if let Some(first_char) = chars.next() {
-                acc.extend(first_char.to_uppercase());
+                push_uppercase!(acc, first_char);
             }
             // Push the rest
-            acc.extend(chars.flat_map(|c| c.to_lowercase()));
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
             acc
         })
     }
@@ -160,18 +183,20 @@ impl<'a> ReCase<'a> {
         let words_iter = self.words_iter();
         let mut acc = self.allocate_buffer();
 
-        for word in words_iter {
+        for (i, word) in words_iter.enumerate() {
             let mut chars = word.chars();
-            if !acc.is_empty() {
+            if i != 0 {
                 acc.push_str(" ");
             } else {
-                // Push first character of first word
+                // Push first character
                 if let Some(first_char) = chars.next() {
-                    acc.extend(first_char.to_uppercase());
+                    push_uppercase!(acc, first_char);
                 }
             }
             // Push the rest
-            acc.extend(chars.flat_map(|c| c.to_lowercase()));
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
         }
 
         acc
@@ -187,19 +212,21 @@ impl<'a> ReCase<'a> {
         let words_iter = self.words_iter();
         let mut acc = self.allocate_buffer();
 
-        for word in words_iter {
+        for (i, word) in words_iter.enumerate() {
             let mut chars = word.chars();
-            if !acc.is_empty() {
+            if i != 0 {
                 acc.push_str(" ");
             }
 
             // Push first character
             if let Some(first_char) = chars.next() {
-                acc.extend(first_char.to_uppercase());
+                push_uppercase!(acc, first_char);
             }
 
             // Push the rest
-            acc.extend(chars.flat_map(|c| c.to_lowercase()));
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
         }
 
         acc
@@ -215,19 +242,21 @@ impl<'a> ReCase<'a> {
         let words_iter = self.words_iter();
         let mut acc = self.allocate_buffer();
 
-        for word in words_iter {
+        for (i, word) in words_iter.enumerate() {
             let mut chars = word.chars();
-            if !acc.is_empty() {
+            if i != 0 {
                 acc.push_str("-");
             }
 
             // Push first character
             if let Some(first_char) = chars.next() {
-                acc.extend(first_char.to_uppercase());
+                push_uppercase!(acc, first_char);
             }
 
             // Push the rest
-            acc.extend(chars.flat_map(|c| c.to_lowercase()));
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
         }
 
         acc
@@ -246,7 +275,10 @@ impl<'a> ReCase<'a> {
             if !acc.is_empty() {
                 acc.push_str("_");
             }
-            acc.extend(word.chars().flat_map(|c| c.to_uppercase()));
+            let chars = word.chars();
+            for c in chars {
+                push_uppercase!(acc, c);
+            }
         }
 
         acc
@@ -270,9 +302,9 @@ impl<'a> ReCase<'a> {
             let chars = word.chars();
             for c in chars {
                 if should_uppercase {
-                    acc.extend(c.to_uppercase());
+                    push_uppercase!(acc, c);
                 } else {
-                    acc.extend(c.to_lowercase());
+                    push_lowercase!(acc, c);
                 }
                 should_uppercase = !should_uppercase;
             }
