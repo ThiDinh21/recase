@@ -114,60 +114,12 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
     }
 }
 
-pub fn slice_into_words(input: String) -> Vec<String> {
-    pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
-
-    let mut words: Vec<String> = vec![];
-    let mut temp_word: Vec<&str> = vec![];
-
-    let vec_to_lowercase = |vec: &Vec<&str>| {
-        vec.iter()
-            .flat_map(|g| g.chars())
-            .flat_map(|c| c.to_lowercase())
-            .collect()
-    };
-
-    for c in input.graphemes(true) {
-        // slice when a symbol is detected
-        if SYMBOLS.contains(&c) {
-            if !temp_word.is_empty() {
-                words.push(vec_to_lowercase(&temp_word));
-                temp_word.clear();
-            }
-            continue;
-        }
-        // slice when an uppercase letter is detected
-        if is_uppercase(c) && !temp_word.is_empty() {
-            words.push(vec_to_lowercase(&temp_word));
-            temp_word.clear();
-        }
-        temp_word.push(c);
-    }
-    if !temp_word.is_empty() {
-        words.push(vec_to_lowercase(&temp_word));
-    }
-
-    words
-}
-
 pub fn is_uppercase(character: &str) -> bool {
     let len = character.graphemes(true).count();
     if len != 1 {
         panic!("is_uppercase only take 1 character");
     }
     character == character.to_uppercase() && character != character.to_lowercase()
-}
-
-pub fn uppercase_first_letter(word: &str) -> String {
-    let mut chars = word.graphemes(true);
-    match chars.next() {
-        None => panic!("Passing empty words"),
-        Some(first_char) => {
-            let mut res = first_char.to_uppercase();
-            res.push_str(chars.as_str());
-            res
-        }
-    }
 }
 
 #[cfg(test)]
@@ -296,7 +248,7 @@ mod utils_tests {
         }
     }
 
-    mod uppercase_related {
+    mod test_uppercase {
         use crate::utils::*;
 
         #[test]
@@ -337,26 +289,6 @@ mod utils_tests {
         #[test]
         fn uppercase_std() {
             assert_eq!("ß".to_uppercase(), "SS".to_string());
-        }
-
-        #[test]
-        #[should_panic]
-        fn test_uppercase_first_letter() {
-            assert_eq!(
-                uppercase_first_letter("ßenevolent"),
-                "SSenevolent".to_string()
-            );
-            assert_eq!(uppercase_first_letter("ṁatsuri"), "Ṁatsuri".to_string());
-            assert_eq!(
-                uppercase_first_letter("夏色まつり"),
-                "夏色まつり".to_string()
-            );
-            assert_eq!(
-                uppercase_first_letter("normalForOnce"),
-                "NormalForOnce".to_string()
-            );
-            assert_eq!(uppercase_first_letter("?"), "?".to_string());
-            uppercase_first_letter("");
         }
     }
 }
