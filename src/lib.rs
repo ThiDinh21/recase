@@ -66,7 +66,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `normal case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.normal_case(), String::from("example string"));
     /// ```
     pub fn normal_case(&self) -> String {
@@ -76,7 +76,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `camelCase` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.camel_case(), String::from("exampleString"));
     /// ```
     pub fn camel_case(&self) -> String {
@@ -105,7 +105,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `PascalCase` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.pascal_case(), String::from("ExampleString"));
     /// ```
     pub fn pascal_case(&self) -> String {
@@ -126,17 +126,17 @@ impl<'a> ReCase<'a> {
     /// Returns a `snake_case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.snake_case(), String::from("example_string"));
     /// ```
     pub fn snake_case(&self) -> String {
-        self.lowercase_with_delim("-")
+        self.lowercase_with_delim("_")
     }
 
     /// Returns a `kebab-case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.kebab_case(), String::from("example-string"));
     /// ```
     pub fn kebab_case(&self) -> String {
@@ -146,7 +146,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `dot.case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.dot_case(), String::from("example.string"));
     /// ```
     pub fn dot_case(&self) -> String {
@@ -156,7 +156,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `path/case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.path_case(), String::from("example/string"));
     /// ```
     pub fn path_case(&self) -> String {
@@ -166,7 +166,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `windows\path\case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.windows_path_case(), String::from("example\\string"));
     /// ```
     pub fn windows_path_case(&self) -> String {
@@ -176,7 +176,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `Sentence case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.sentence_case(), String::from("Example string"));
     /// ```
     pub fn sentence_case(&self) -> String {
@@ -205,7 +205,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `Title Case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.title_case(), String::from("Example String"));
     /// ```
     pub fn title_case(&self) -> String {
@@ -235,7 +235,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `Header-Case` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.header_case(), String::from("Example-String"));
     /// ```
     pub fn header_case(&self) -> String {
@@ -265,7 +265,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `UPPER_SNAKE_CASE` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.upper_snake_case(), String::from("EXAMPLE_STRING"));
     /// ```
     pub fn upper_snake_case(&self) -> String {
@@ -287,7 +287,7 @@ impl<'a> ReCase<'a> {
     /// Returns a `AlTeRnAtInG cAsE` version of the input text as a new String
     /// ## Example
     /// ```
-    /// let recase = recase::ReCaseRef::new("Example String");
+    /// let recase = recase::ReCase::new("Example String");
     /// assert_eq!(recase.alternating_case(), String::from("eXaMpLe StRiNg"));
     /// ```
     pub fn alternating_case(&self) -> String {
