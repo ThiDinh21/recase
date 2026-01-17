@@ -1,8 +1,6 @@
 use itertools::{Itertools, MultiPeek};
 use unicode_segmentation::{GraphemeIndices, UnicodeSegmentation};
 
-pub const SYMBOLS: [&str; 6] = [" ", ".", "/", "_", "-", "\\"];
-
 #[derive(Debug)]
 pub struct WordSplit<'a> {
     graphemes: MultiPeek<GraphemeIndices<'a>>,
@@ -34,7 +32,7 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
             // If c0 is None -> end of str -> is boundary
             // If c0 is a symbol -> is boundary
             let peek0 = graphemes.peek();
-            let is_c0_boundary = peek0.map_or(true, |(_, c)| SYMBOLS.contains(c));
+            let is_c0_boundary = peek0.map_or(true, |(_, c)| is_not_alphanumeric(c));
             let is_c0_uppercase = peek0.map_or(false, |(_, c)| is_uppercase(c));
             let c0_len = peek0.map_or(0, |(_, c)| c.len());
 
@@ -47,7 +45,7 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
             let peek2 = graphemes.peek();
             // Check if c2 is neither an uppercase letter nor special char nor end of str
             let is_c2_lowercase =
-                peek2.map_or(false, |(_, c)| !is_uppercase(c) && !SYMBOLS.contains(c));
+                peek2.map_or(false, |(_, c)| !is_uppercase(c) && !is_not_alphanumeric(c));
 
             // 1. Check boundary
             // slice when a symbol is detected or end of str
@@ -116,6 +114,14 @@ impl<'heystack> Iterator for WordSplit<'heystack> {
 pub fn is_uppercase(grapheme: &str) -> bool {
     if let Some(c) = grapheme.chars().next() {
         return c.is_uppercase();
+    }
+    false
+}
+
+// Check if grapheme is a symbol of some sort. Null doesn't count as one.
+pub fn is_not_alphanumeric(grapheme: &str) -> bool {
+    if let Some(c) = grapheme.chars().next() {
+        return !c.is_alphanumeric();
     }
     false
 }
