@@ -24,7 +24,7 @@ recase = "0.5.1"
 
 - **Zero Allocation Logic**: Heavily optimized runtime and memory usage. It allocates exactly once (for the result string).
 - **Unicode Aware**: Handles complex graphemes, and acronyms correctly aside from emojis, they are treated the same as lowercase characters for now.
-- **Acronyms**: now support acronyms and will not split them into seperated characters anymore.
+- **Acronyms**: Now support acronyms and will not split them into seperated characters anymore.
 
 <p>&nbsp</p>
 
@@ -70,7 +70,7 @@ fn main() {
 
 ## Limitations
 
-- Emojis are treated the same as lEmoji will be counted as lowercase characterowercase characters.
+- Emoji will be counted as lowercase characterowercase characters.
 - Some UTF-8 characters can't be lowercased, like "SS" which is the uppercased form of "ß" or the dotless I (I) will turn into a normal i. There might be more cases that I failed to notice.
 
 <p>&nbsp</p>
