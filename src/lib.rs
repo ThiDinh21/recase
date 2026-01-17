@@ -10,8 +10,8 @@ mod utils;
 /// # Example
 /// ```
 /// let recase = recase::ReCase::new("Example String");
-/// assert_eq!(recase.snake_case(), String::from("example_string"));          
-/// assert_eq!(recase.upper_snake_case(), String::from("EXAMPLE_STRING"));
+/// assert_eq!(recase.snake_case(), "example_string");          
+/// assert_eq!(recase.upper_snake_case(), "EXAMPLE_STRING");
 /// ```
 #[derive(Debug)]
 pub struct ReCase<'a> {
@@ -67,7 +67,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.normal_case(), String::from("example string"));
+    /// assert_eq!(recase.normal_case(), "example string");
     /// ```
     pub fn normal_case(&self) -> String {
         self.lowercase_with_delim(" ")
@@ -77,7 +77,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.camel_case(), String::from("exampleString"));
+    /// assert_eq!(recase.camel_case(), "exampleString");
     /// ```
     pub fn camel_case(&self) -> String {
         let words_iter = self.words_iter();
@@ -106,7 +106,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.pascal_case(), String::from("ExampleString"));
+    /// assert_eq!(recase.pascal_case(), "ExampleString");
     /// ```
     pub fn pascal_case(&self) -> String {
         let words_iter = self.words_iter();
@@ -127,7 +127,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.snake_case(), String::from("example_string"));
+    /// assert_eq!(recase.snake_case(), "example_string");
     /// ```
     pub fn snake_case(&self) -> String {
         self.lowercase_with_delim("_")
@@ -137,7 +137,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.kebab_case(), String::from("example-string"));
+    /// assert_eq!(recase.kebab_case(), "example-string");
     /// ```
     pub fn kebab_case(&self) -> String {
         self.lowercase_with_delim("-")
@@ -147,7 +147,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.dot_case(), String::from("example.string"));
+    /// assert_eq!(recase.dot_case(), "example.string");
     /// ```
     pub fn dot_case(&self) -> String {
         self.lowercase_with_delim(".")
@@ -157,7 +157,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.path_case(), String::from("example/string"));
+    /// assert_eq!(recase.path_case(), "example/string");
     /// ```
     pub fn path_case(&self) -> String {
         self.lowercase_with_delim("/")
@@ -167,7 +167,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.windows_path_case(), String::from("example\\string"));
+    /// assert_eq!(recase.windows_path_case(), "example\\string");
     /// ```
     pub fn windows_path_case(&self) -> String {
         self.lowercase_with_delim("\\")
@@ -177,7 +177,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.sentence_case(), String::from("Example string"));
+    /// assert_eq!(recase.sentence_case(), "Example string");
     /// ```
     pub fn sentence_case(&self) -> String {
         let words_iter = self.words_iter();
@@ -206,7 +206,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.title_case(), String::from("Example String"));
+    /// assert_eq!(recase.title_case(), "Example String");
     /// ```
     pub fn title_case(&self) -> String {
         let words_iter = self.words_iter();
@@ -236,7 +236,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.header_case(), String::from("Example-String"));
+    /// assert_eq!(recase.header_case(), "Example-String");
     /// ```
     pub fn header_case(&self) -> String {
         let words_iter = self.words_iter();
@@ -266,7 +266,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.upper_snake_case(), String::from("EXAMPLE_STRING"));
+    /// assert_eq!(recase.upper_snake_case(), "EXAMPLE_STRING");
     /// ```
     pub fn upper_snake_case(&self) -> String {
         let mut acc = self.allocate_buffer();
@@ -288,7 +288,7 @@ impl<'a> ReCase<'a> {
     /// ## Example
     /// ```
     /// let recase = recase::ReCase::new("Example String");
-    /// assert_eq!(recase.alternating_case(), String::from("eXaMpLe StRiNg"));
+    /// assert_eq!(recase.alternating_case(), "eXaMpLe StRiNg");
     /// ```
     pub fn alternating_case(&self) -> String {
         let mut should_uppercase = false;
@@ -327,7 +327,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_camel_case(), String::from("exampleString"));
+    /// assert_eq!("Example String".to_camel_case(), "exampleString");
     /// ```
     fn to_camel_case(&self) -> String;
 
@@ -335,7 +335,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_pascal_case(), String::from("ExampleString"));
+    /// assert_eq!("Example String".to_pascal_case(), "ExampleString");
     /// ```
     fn to_pascal_case(&self) -> String;
 
@@ -343,7 +343,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_snake_case(), String::from("example_string"));
+    /// assert_eq!("Example String".to_snake_case(), "example_string");
     /// ```
     fn to_snake_case(&self) -> String;
 
@@ -351,7 +351,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_kebab_case(), String::from("example-string"));
+    /// assert_eq!("Example String".to_kebab_case(), "example-string");
     /// ```
     fn to_kebab_case(&self) -> String;
 
@@ -359,7 +359,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_dot_case(), String::from("example.string"));
+    /// assert_eq!("Example String".to_dot_case(), "example.string");
     /// ```
     fn to_dot_case(&self) -> String;
 
@@ -367,7 +367,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_path_case(), String::from("example/string"));
+    /// assert_eq!("Example String".to_path_case(), "example/string");
     /// ```
     fn to_path_case(&self) -> String;
 
@@ -375,7 +375,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_windows_path_case(), String::from("example\\string"));
+    /// assert_eq!("Example String".to_windows_path_case(), "example\\string");
     /// ```
     fn to_windows_path_case(&self) -> String;
 
@@ -383,7 +383,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_sentence_case(), String::from("Example string"));
+    /// assert_eq!("Example String".to_sentence_case(), "Example string");
     /// ```
     fn to_sentence_case(&self) -> String;
 
@@ -391,7 +391,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_title_case(), String::from("Example String"));
+    /// assert_eq!("Example String".to_title_case(), "Example String");
     /// ```
     fn to_title_case(&self) -> String;
 
@@ -399,7 +399,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_header_case(), String::from("Example-String"));
+    /// assert_eq!("Example String".to_header_case(), "Example-String");
     /// ```
     fn to_header_case(&self) -> String;
 
@@ -407,7 +407,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_upper_snake_case(), String::from("EXAMPLE_STRING"));
+    /// assert_eq!("Example String".to_upper_snake_case(), "EXAMPLE_STRING");
     /// ```
     fn to_upper_snake_case(&self) -> String;
 
@@ -415,7 +415,7 @@ pub trait Casing {
     /// ## Example
     /// ```
     /// use recase::Casing;
-    /// assert_eq!("Example String".to_alternating_case(), String::from("eXaMpLe StRiNg"));
+    /// assert_eq!("Example String".to_alternating_case(), "eXaMpLe StRiNg");
     /// ```
     fn to_alternating_case(&self) -> String;
 }
