@@ -179,6 +179,65 @@ impl<'a> ReCaseRef<'a> {
     pub fn windows_path_case(&self) -> String {
         self.lowercase_with_delim("\\")
     }
+
+    /// Returns a `Sentence case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.sentence_case(), String::from("Example string"));
+    /// ```
+    pub fn sentence_case(&self) -> String {
+        let words_iter = self.words_iter();
+        let mut acc = self.allocate_buffer();
+
+        for (i, word) in words_iter.enumerate() {
+            let mut chars = word.chars();
+            if i != 0 {
+                acc.push_str(" ");
+            } else {
+                // Push first character
+                if let Some(first_char) = chars.next() {
+                    push_uppercase!(acc, first_char);
+                }
+            }
+            // Push the rest
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
+        }
+
+        acc
+    }
+
+    /// Returns a `Title Case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.title_case(), String::from("Example String"));
+    /// ```
+    pub fn title_case(&self) -> String {
+        let words_iter = self.words_iter();
+        let mut acc = self.allocate_buffer();
+
+        for (i, word) in words_iter.enumerate() {
+            let mut chars = word.chars();
+            if i != 0 {
+                acc.push_str(" ");
+            }
+
+            // Push first character
+            if let Some(first_char) = chars.next() {
+                push_uppercase!(acc, first_char);
+            }
+
+            // Push the rest
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
+        }
+
+        acc
+    }
 }
 
 impl ReCase {
