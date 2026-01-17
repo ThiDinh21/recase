@@ -1,4 +1,4 @@
-## [0.5.0] - 2026-01-17
+## [0.5.1] - 2026-01-17
 
 ### ⚠ BREAKING CHANGES
 
@@ -13,6 +13,7 @@
 ### Changed
 
 - **Input Handling**: `ReCase` struct now holds a reference (`&'a str`) instead of an owned `String`, reducing unnecessary cloning during initialization.
+- **Acronyms**: now support acronyms and will not split them into seperated characters anymore.
 
 ---
 

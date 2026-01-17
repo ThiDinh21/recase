@@ -15,7 +15,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-recase = "0.5.0"
+recase = "0.5.1"
 ```
 
 <p>&nbsp</p>
@@ -24,6 +24,7 @@ recase = "0.5.0"
 
 - **Zero Allocation Logic**: Heavily optimized runtime and memory usage. It allocates exactly once (for the result string).
 - **Unicode Aware**: Handles complex graphemes, and acronyms correctly aside from emojis, they are treated the same as lowercase characters for now.
+- **Acronyms**: now support acronyms and will not split them into seperated characters anymore.
 
 <p>&nbsp</p>
 
@@ -33,15 +34,15 @@ recase = "0.5.0"
 use recase::{ReCase, Casing};
 
 fn main() {
-    const INPUT: &str = "Löng and meaningless-Ẽxample_Text";
+    const INPUT: &str = "Löng and meaningless-HTML_Text";
 
-    // Using the Casing trait
-    println!("{}", INPUT.to_kebab_case());   // Prints "löng-and-meaningless-ẽxample-text"
+    // Using the Casing Trait
+    println!("{}", INPUT.to_kebab_case()); // Prints "löng-and-meaningless-html-text"
 
-    // Using ReCase struct
     let recase = ReCase::new(INPUT);
-    println!("{}", recase.snake_case());     // Prints "löng_and_meaningless_ẽxample_text"
-    println!("{}", recase.camel_case());     // Prints "löngAndMeaninglessẼxampleText"
+
+    println!("{}", recase.snake_case()); // Prints "löng_and_meaningless_html_text"
+    println!("{}", recase.camel_case()); // Prints "löngAndMeaninglessHTMLText"
 }
 ```
 
