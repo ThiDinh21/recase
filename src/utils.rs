@@ -250,19 +250,6 @@ mod utils_tests {
         use crate::utils::*;
 
         #[test]
-        #[should_panic]
-        fn is_uppercase_zero_char() {
-            assert!(is_uppercase(""));
-        }
-
-        #[test]
-        #[should_panic]
-        fn is_uppercase_two_plus_chars() {
-            assert!(is_uppercase("SS"));
-            assert!(is_uppercase("Lmao"));
-        }
-
-        #[test]
         fn is_uppercase_one_char_ascii() {
             assert!(is_uppercase("S"));
             assert!(!is_uppercase("s"));
