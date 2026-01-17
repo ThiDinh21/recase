@@ -84,25 +84,67 @@ impl<'a> ReCaseRef<'a> {
     /// ```
     pub fn camel_case(&self) -> String {
         let words_iter = self.words_iter();
-        let mut res = self.allocate_buffer();
+        let mut acc = self.allocate_buffer();
 
         for (i, word) in words_iter.enumerate() {
             let mut chars = word.chars();
             // Push first character
             if let Some(first_char) = chars.next() {
                 if i == 0 {
-                    push_lowercase!(res, first_char);
+                    push_lowercase!(acc, first_char);
                 } else {
-                    push_uppercase!(res, first_char);
+                    push_uppercase!(acc, first_char);
                 }
             }
             // Push the rest
             chars.for_each(|c| {
-                push_lowercase!(res, c);
+                push_lowercase!(acc, c);
             });
         }
 
-        res
+        acc
+    }
+
+    /// Returns a `PascalCase` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCaseRef::new("Example String");
+    /// assert_eq!(recase.pascal_case(), String::from("ExampleString"));
+    /// ```
+    pub fn pascal_case(&self) -> String {
+        let words_iter = self.words_iter();
+        words_iter.fold(self.allocate_buffer(), |mut acc, word| {
+            let mut chars = word.chars();
+            if let Some(first_char) = chars.next() {
+                push_uppercase!(acc, first_char);
+            }
+            // Push the rest
+            chars.for_each(|c| {
+                push_lowercase!(acc, c);
+            });
+            acc
+        })
+    }
+
+    /// Returns a `snake_case` version of the input text as a new String
+    /// ## Example
+    /// ```
+    /// let recase = recase::ReCase::new("Example String");
+    /// assert_eq!(recase.snake_case(), String::from("example_string"));
+    /// ```
+    pub fn snake_case(&self) -> String {
+        let mut acc = self.allocate_buffer();
+
+        for word in self.words_iter() {
+            if !acc.is_empty() {
+                acc.push_str("_");
+            }
+            for c in word.chars() {
+                push_lowercase!(acc, c);
+            }
+        }
+
+        acc
     }
 }
 
